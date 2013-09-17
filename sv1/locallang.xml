@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Localisation file for JSON Data Connector Service</description>
+		<type>module</type>
+		<csh_table></csh_table>
+		<fileId>EXT:svconnector_json/sv1/locallang.xml</fileId>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="no_json_defined">No JSON data has been defined.</label>
+			<label index="json_not_fetched">JSON Data %1$s could not be fetched with error: %2$s</label>
+		</languageKey>
+	</data>
+</T3locallang>

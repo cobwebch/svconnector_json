@@ -1,0 +1,3 @@
+uri = http://www.iware.ch/cMME/api/Element
+encoding = utf-8
+accept = application/json
