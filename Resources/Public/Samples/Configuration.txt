@@ -1,3 +1,3 @@
-uri = http://www.iware.ch/cMME/api/Element
+uri = http://forge.typo3.org/projects/extension-external_import/issues.json
 encoding = utf-8
-accept = application/json
+accept =
