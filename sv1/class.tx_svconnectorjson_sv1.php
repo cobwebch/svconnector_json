@@ -23,7 +23,7 @@
 ***************************************************************/
 
 /**
- * Service that reads JSON DATA for the "svconnector_json" extension.
+ * Service that reads JSON data for the "svconnector_json" extension.
  *
  * @author		Prakash A Bhat (Cobweb) <typo3@cobweb.ch>
  * @package		TYPO3
@@ -61,8 +61,7 @@ class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 	public function fetchRaw($parameters) {
 		$result = $this->query($parameters);
         if (TYPO3_DLOG || $this->extConf['debug']) {
-            //NOTE: We cannot add this info to devlog, as the data can be huge, still you may try your luck. ;)
-            //t3lib_div::devLog('RAW JSON Data', $this->extKey, -1, array($result));
+            t3lib_div::devLog('RAW JSON data', $this->extKey, -1, array($result));
         }
 		// Implement post-processing hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processRaw'])) {
@@ -84,7 +83,7 @@ class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 	public function fetchXML($parameters) {
 
 		$xml = $this->fetchArray($parameters);
-        $xml = &t3lib_div::array2xml($xml);
+        $xml = t3lib_div::array2xml_cs($xml);
 
 		// Implement post-processing hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processXML'])) {
@@ -105,9 +104,9 @@ class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 	 * @return	array	PHP array
 	 */
 	public function fetchArray($parameters) {
-			// Get the data from the file
+		// Get the data from the file
 		$result = $this->query($parameters);
-		$result = json_decode($result,true);
+		$result = json_decode($result, TRUE);
 
 		if (TYPO3_DLOG || $this->extConf['debug']) {
 			t3lib_div::devLog('Structured data', $this->extKey, -1, $result);
@@ -136,7 +135,7 @@ class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 	 */
 	protected function query($parameters) {
 
-	 		// Check if the json's URI is defined
+	 	// Check if the json's URI is defined
 		if (empty($parameters['uri'])) {
 			$message = $this->lang->getLL('no_json_defined');
 			if (TYPO3_DLOG || $this->extConf['debug']) {
@@ -145,20 +144,21 @@ class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 			throw new Exception($message, 1299257883);
 		} else {
 			$report = array();
+			// Define the headers
 			$headers = FALSE;
 			if (isset($parameters['useragent'])) {
 				$headers = array('User-Agent: ' . $parameters['useragent']);
 			}
             if (isset($parameters['accept'])) {
-                if(is_array($headers)){
+                if (is_array($headers)){
                     $headers[] = 'Accept: ' . $parameters['accept'];
-                }else{
+                } else {
                     $headers = array('Accept: ' . $parameters['accept']);
                 }
             }
 
             if (TYPO3_DLOG || $this->extConf['debug']) {
-                t3lib_div::devLog('Call parameters', $this->extKey, -1, array('params'=>$parameters, 'headers' => $headers));
+                t3lib_div::devLog('Call parameters and headers', $this->extKey, -1, array('params'=>$parameters, 'headers' => $headers));
             }
 
 			$data = t3lib_div::getURL($parameters['uri'], 0, $headers, $report);
@@ -169,27 +169,23 @@ class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 				}
 				throw new Exception($message, 1299257894);
 			}
-				// Check if the current charset is the same as the file encoding
-				// Don't do the check if no encoding was defined
-				// TODO: add automatic encoding detection by the reading the encoding attribute in the JSON header
+			// Check if the current charset is the same as the file encoding
+			// Don't do the check if no encoding was defined
+			// TODO: add automatic encoding detection by the reading the encoding attribute in the JSON header
 			if (empty($parameters['encoding'])) {
 				$isSameCharset = TRUE;
 			} else {
-					// Standardize charset name and compare
+				// Standardize charset name and compare
 				$encoding = $this->lang->csConvObj->parse_charset($parameters['encoding']);
 				$isSameCharset = $this->lang->charSet == $encoding;
 			}
-				// If the charset is not the same, convert data
-				// NOTE: example values for testing conversion:
-                // uri = http://www.iware.ch/cMME/api/Element
-                // encoding = utf-8
-                // Accept: application/json
+			// If the charset is not the same, convert data
 			if (!$isSameCharset) {
 				$data = $this->lang->csConvObj->conv($data, $encoding, $this->lang->charSet);
 			}
 		}
 
-			// Process the result if any hook is registered
+		// Process the result if any hook is registered
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processResponse'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processResponse'] as $className) {
 				$processor = &t3lib_div::getUserObj($className);
@@ -197,7 +193,7 @@ class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 			}
 		}
 
-			// Return the result
+		// Return the result
 		return $data;
 	}
 }

@@ -6,7 +6,7 @@ if (!defined ('TYPO3_MODE')) {
 t3lib_extMgm::addService($_EXTKEY,  'connector' /* sv type */,  'tx_svconnectorjson_sv1' /* sv key */,
 		array(
 
-			'title' => 'JSON Data connector',
+			'title' => 'JSON connector',
 			'description' => 'Connector service to get JSON Data',
 
 			'subtype' => 'json',
