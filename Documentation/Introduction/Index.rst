@@ -32,7 +32,7 @@ problem or suggest features
 Keeping the developer happy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you appreciate this extension, don't hesite to mention it
+If you appreciate this extension, don't hesitate to mention it
 around you or "like" the extension from the detail view on the TER.
 
 You may also take a step back and reflect about the beauty of sharing.
