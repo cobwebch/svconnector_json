@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2013 Prakash A Bhat (Cobweb) <typo3@cobweb.ch>
+*  (c) 2013-2014 Prakash A Bhat (Cobweb) <typo3@cobweb.ch>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,10 +26,9 @@
  * Service that reads JSON data for the "svconnector_json" extension.
  *
  * @author		Prakash A Bhat (Cobweb) <typo3@cobweb.ch>
+ * @author		Francois Suter (Cobweb) <typo3@cobweb.ch>
  * @package		TYPO3
  * @subpackage	tx_svconnectorjson
- *
- * $Id: class.tx_svconnectorjson_sv1.php 65955 2013-14-08 19:49:38Z pbhat $
  */
 class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 	public $prefixId = 'tx_svconnectorjson_sv1';		// Same as class name
@@ -46,7 +45,6 @@ class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 	 */
 	public function init() {
 		parent::init();
-		$this->lang->includeLLFile('EXT:' . $this->extKey . '/sv1/locallang.xml');
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
 		return true;
 	}
@@ -137,7 +135,7 @@ class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 
 	 	// Check if the json's URI is defined
 		if (empty($parameters['uri'])) {
-			$message = $this->lang->getLL('no_json_defined');
+			$message = $this->sL('LLL:EXT:' . $this->extKey . '/sv1/locallang.xml:no_json_defined');
 			if (TYPO3_DLOG || $this->extConf['debug']) {
 				t3lib_div::devLog($message, $this->extKey, 3);
 			}
@@ -163,7 +161,11 @@ class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 
 			$data = t3lib_div::getURL($parameters['uri'], 0, $headers, $report);
 			if (!empty($report['message'])) {
-				$message = sprintf($this->lang->getLL('json_not_fetched'), $parameters['uri'], $report['message']);
+				$message = sprintf(
+					$this->sL('LLL:EXT:' . $this->extKey . '/sv1/locallang.xml:json_not_fetched'),
+					$parameters['uri'],
+					$report['message']
+				);
 				if (TYPO3_DLOG || $this->extConf['debug']) {
 					t3lib_div::devLog($message, $this->extKey, 3, $report);
 				}
@@ -176,12 +178,12 @@ class tx_svconnectorjson_sv1 extends tx_svconnector_base {
 				$isSameCharset = TRUE;
 			} else {
 				// Standardize charset name and compare
-				$encoding = $this->lang->csConvObj->parse_charset($parameters['encoding']);
-				$isSameCharset = $this->lang->charSet == $encoding;
+				$encoding = $this->getCharsetConverter()->parse_charset($parameters['encoding']);
+				$isSameCharset = $this->getCharset() == $encoding;
 			}
 			// If the charset is not the same, convert data
 			if (!$isSameCharset) {
-				$data = $this->lang->csConvObj->conv($data, $encoding, $this->lang->charSet);
+				$data = $this->getCharsetConverter()->conv($data, $encoding, $this->getCharset());
 			}
 		}
 

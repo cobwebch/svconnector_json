@@ -1,3 +1,7 @@
+2014-04-03 Francois Suter (Cobweb)  <typo3@cobweb.ch>
+
+	* Implemented new API from base connector, resolves #57555
+
 2013-09-23 Prakash A Bhat (Cobweb)  <typo3@cobweb.ch>
 
 	* Initial Release version 1.0.0
