@@ -12,13 +12,15 @@ Developer's manual
 ------------------
 
 Reading JSON data using the JSON connector service is a simple
-task. The first step is to get the proper service object::
+task. The first step is to get the proper service object:
 
-   $services = t3lib_extMgm::findService('connector', 'json');
+.. code-block:: php
+
+   $services = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService('connector', 'json');
    if ($services === FALSE) {
            // Issue an error
    } else {
-           $connector = t3lib_div::makeInstanceService('connector', 'json');
+           $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService('connector', 'json');
    }
 
 

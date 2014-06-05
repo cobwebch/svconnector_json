@@ -1,3 +1,7 @@
+2014-06-05 Francois Suter (Cobweb)  <typo3@cobweb.ch>
+
+	* Updated code examples in documentation, resolves #59352
+
 2014-04-03 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Implemented new API from base connector, resolves #57555
