@@ -3,9 +3,13 @@ if (!defined ('TYPO3_MODE')) {
  	die ('Access denied.');
 }
 
-t3lib_extMgm::addService($_EXTKEY,  'connector' /* sv type */,  'tx_svconnectorjson_sv1' /* sv key */,
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
+		$_EXTKEY,
+        // Service type
+        'connector',
+        // Service key
+        'tx_svconnectorjson_sv1',
 		array(
-
 			'title' => 'JSON connector',
 			'description' => 'Connector service to get JSON Data',
 
@@ -18,8 +22,6 @@ t3lib_extMgm::addService($_EXTKEY,  'connector' /* sv type */,  'tx_svconnectorj
 			'os' => '',
 			'exec' => '',
 
-			'classFile' => t3lib_extMgm::extPath($_EXTKEY) . 'sv1/class.tx_svconnectorjson_sv1.php',
-			'className' => 'tx_svconnectorjson_sv1',
+			'className' => \Cobweb\SvconnectorJson\Service\ConnectorJson::class
 		)
-	);
-?>
+);

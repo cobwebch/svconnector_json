@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-26T12:58:40Z" product-name="svconnector_json">
+		<header/>
+		<body>
+			<trans-unit id="no_json_defined" xml:space="preserve">
+				<source>No JSON data has been defined.</source>
+			</trans-unit>
+			<trans-unit id="json_not_fetched" xml:space="preserve">
+				<source>JSON Data %1$s could not be fetched with error: %2$s</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

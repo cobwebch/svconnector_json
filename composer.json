@@ -1,0 +1,32 @@
+{
+	"name": "cobweb/svconnector_json",
+	"type": "typo3-cms-extension",
+	"description": "Connector service for JSON data",
+	"license": [
+		"GPL-2.0+"
+	],
+	"authors": [
+		{
+			"name": "Prakash A Bhat",
+			"role": "Developer"
+		},
+		{
+			"name": "Francois Suter",
+			"role": "Developer"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Cobweb\\SvconnectorJson\\": "Classes/"
+		}
+	},
+	"version": "2.0.0",
+	"require": {
+		"typo3/cms-core": ">=7.6.0,<8.0",
+		"cobweb/svconnector": ">=3.0.0"
+	},
+	"replace": {
+		"svconnector_json": "self.version",
+		"typo3-ter/svconnector_json": "self.version"
+	}
+}

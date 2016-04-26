@@ -1,3 +1,7 @@
+2016-04-26 Francois Suter (Cobweb)  <typo3@cobweb.ch>
+
+	* Refactored for TYPO3 CMS 7, resolves #75928
+
 2014-06-05 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Updated code examples in documentation, resolves #59352
