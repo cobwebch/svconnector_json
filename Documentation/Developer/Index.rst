@@ -31,7 +31,7 @@ error message.
 
 On the contrary you are assured that there's at least one valid
 service and you can get an instance of it by calling
-:code:`t3lib_div::makeInstanceService()`.
+:code:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService()`.
 
 The next step is simply to call the appropriate method from the API –
 with the right parameters – depending on which format you want to have
@@ -48,5 +48,5 @@ This will return a PHP array from the decoded JSON data. The
 :code:`fetchRaw()` will return the JSON data as a string.
 
 The :code:`fetchXML()` method returns a XML version of the PHP array
-transformed using :code:`t3lib_div::array2xml_cs()`.
+transformed using :code:`\TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs()`.
 

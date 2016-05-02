@@ -27,7 +27,7 @@ JSON Connector Service
 		  JSON, data import, fetch data
 
 	:Copyright:
-		2013
+		2013-2016
 
 	:Author:
 		  Prakash Bhat (Cobweb), François Suter (Cobweb)
