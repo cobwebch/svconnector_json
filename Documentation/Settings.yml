@@ -4,8 +4,23 @@
 
 ---
 conf.py:
-  copyright: 2013-2016
-  project: JSON connector
-  version: 2.0
-  release: 2.0.0
+  copyright: 2013-2017
+  project: JSON Connector Service
+  version: 2.1
+  release: 2.1.0
+  latex_documents:
+  - - Index
+    - svconnector_json.tex
+    - JSON Connector Service
+    - Francois Suter
+    - manual
+  latex_elements:
+    papersize: a4paper
+    pointsize: 10pt
+    preamble: \usepackage{typo3}
+  extensions:
+  - sphinx.ext.intersphinx
+  - t3sphinx.ext.t3extras
+  - t3sphinx.ext.t3tablerows
+  - t3sphinx.ext.targets
 ...
