@@ -4,10 +4,10 @@
 		<header/>
 		<body>
 			<trans-unit id="no_json_defined" xml:space="preserve">
-				<source>No JSON data has been defined.</source>
+				<source>No URI has been defined for the JSON data.</source>
 			</trans-unit>
 			<trans-unit id="json_not_fetched" xml:space="preserve">
-				<source>JSON Data %1$s could not be fetched with error: %2$s</source>
+				<source>JSON data %1$s could not be fetched with error: %2$s</source>
 			</trans-unit>
 		</body>
 	</file>

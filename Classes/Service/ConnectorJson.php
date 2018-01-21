@@ -16,6 +16,7 @@ namespace Cobweb\SvconnectorJson\Service;
 
 use Cobweb\Svconnector\Exception\SourceErrorException;
 use Cobweb\Svconnector\Service\ConnectorBase;
+use Cobweb\Svconnector\Utility\FileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -121,22 +122,20 @@ class ConnectorJson extends ConnectorBase
     }
 
     /**
-     * This method reads the content of the JSON DATA defined in the parameters
-     * and returns it as an array
+     * Reads the content of the JSON DATA defined in the parameters and returns it as an array.
      *
-     * NOTE:    this method does not implement the "processParameters" hook,
-     *          as it does not make sense in this case
+     * NOTE: This method does not implement the "processParameters" hook, as it does not make sense in this case.
      *
      * @param array $parameters Parameters for the call
-     * @throws SourceErrorException
      * @return array Content of the json
+     * @throws SourceErrorException
+     * @throws \Exception
      */
     protected function query($parameters)
     {
-
         // Check if the json's URI is defined
         if (empty($parameters['uri'])) {
-            $message = $this->sL('LLL:EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xlf:no_json_defined');
+            $message = $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:no_json_defined');
             if (TYPO3_DLOG || $this->extConf['debug']) {
                 GeneralUtility::devLog($message, $this->extKey, 3);
             }
@@ -144,61 +143,60 @@ class ConnectorJson extends ConnectorBase
                     $message,
                     1299257883
             );
-        } else {
-            $report = array();
-            // Define the headers
-            $headers = false;
-            if (isset($parameters['useragent'])) {
-                $headers = array('User-Agent: ' . $parameters['useragent']);
-            }
-            if (isset($parameters['accept'])) {
-                if (is_array($headers)) {
-                    $headers[] = 'Accept: ' . $parameters['accept'];
-                } else {
-                    $headers = array('Accept: ' . $parameters['accept']);
-                }
-            }
+        }
 
-            if (TYPO3_DLOG || $this->extConf['debug']) {
-                GeneralUtility::devLog('Call parameters and headers', $this->extKey, -1,
-                        array('params' => $parameters, 'headers' => $headers));
-            }
-
-            $data = GeneralUtility::getUrl(
-                    $parameters['uri'],
-                    0,
-                    $headers,
-                    $report
-            );
-            if ($data === false) {
-                $message = sprintf(
-                        $this->sL('LLL:EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xlf:json_not_fetched'),
-                        $parameters['uri'],
-                        $report['message']
-                );
-                if (TYPO3_DLOG || $this->extConf['debug']) {
-                    GeneralUtility::devLog($message, $this->extKey, 3, $report);
-                }
-                throw new SourceErrorException(
-                        $message,
-                        1299257894
-                );
-            }
-            // Check if the current charset is the same as the file encoding
-            // Don't do the check if no encoding was defined
-            // TODO: add automatic encoding detection by the reading the encoding attribute in the JSON header
-            if (empty($parameters['encoding'])) {
-                $encoding = '';
-                $isSameCharset = true;
+        // Define the headers
+        $headers = [];
+        if (isset($parameters['useragent'])) {
+            $headers = array('User-Agent: ' . $parameters['useragent']);
+        }
+        if (isset($parameters['accept'])) {
+            if (is_array($headers)) {
+                $headers[] = 'Accept: ' . $parameters['accept'];
             } else {
-                // Standardize charset name and compare
-                $encoding = $this->getCharsetConverter()->parse_charset($parameters['encoding']);
-                $isSameCharset = $this->getCharset() == $encoding;
+                $headers = array('Accept: ' . $parameters['accept']);
             }
-            // If the charset is not the same, convert data
-            if (!$isSameCharset) {
-                $data = $this->getCharsetConverter()->conv($data, $encoding, $this->getCharset());
+        }
+
+        if (TYPO3_DLOG || $this->extConf['debug']) {
+            GeneralUtility::devLog(
+                    'Call parameters and headers',
+                    $this->extKey,
+                    -1,
+                    array('params' => $parameters, 'headers' => $headers)
+            );
+        }
+
+        $fileUtility = GeneralUtility::makeInstance(FileUtility::class);
+        $data = $fileUtility->getFileContent($parameters['uri'], $headers);
+        if ($data === false) {
+            $message = sprintf(
+                    $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:json_not_fetched'),
+                    $parameters['uri'],
+                    $fileUtility->getError()
+            );
+            if (TYPO3_DLOG || $this->extConf['debug']) {
+                GeneralUtility::devLog($message, $this->extKey, 3);
             }
+            throw new SourceErrorException(
+                    $message,
+                    1299257894
+            );
+        }
+        // Check if the current charset is the same as the file encoding
+        // Don't do the check if no encoding was defined
+        // TODO: add automatic encoding detection by the reading the encoding attribute in the JSON header
+        if (empty($parameters['encoding'])) {
+            $encoding = '';
+            $isSameCharset = true;
+        } else {
+            // Standardize charset name and compare
+            $encoding = $this->getCharsetConverter()->parse_charset($parameters['encoding']);
+            $isSameCharset = $this->getCharset() == $encoding;
+        }
+        // If the charset is not the same, convert data
+        if (!$isSameCharset) {
+            $data = $this->getCharsetConverter()->conv($data, $encoding, $this->getCharset());
         }
 
         // Process the result if any hook is registered

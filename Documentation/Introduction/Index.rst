@@ -22,9 +22,9 @@ Questions and support
 
 If you have any questions about this extension, please ask them in the
 TYPO3 English mailing list, so that others can benefit from the
-answers. Please use the bug tracker on forge.typo3.org to report
+answers. Please use the bug tracker on GitHub to report
 problem or suggest features
-(http://forge.typo3.org/projects/extension-svconnector\_json/issues).
+(https://github.com/cobwebch/svconnector_json/issues).
 
 
 .. _happy-developer:
@@ -33,7 +33,7 @@ Keeping the developer happy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you appreciate this extension, don't hesitate to mention it
-around you or "like" the extension from the detail view on the TER.
+around you.
 
 You may also take a step back and reflect about the beauty of sharing.
 Think about how much you are benefiting and how much yourself is
