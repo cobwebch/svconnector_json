@@ -146,7 +146,7 @@ class ConnectorJson extends ConnectorBase
         }
 
         // Define the headers
-        $headers = [];
+        $headers = null;
         if (isset($parameters['useragent'])) {
             $headers = array('User-Agent: ' . $parameters['useragent']);
         }
