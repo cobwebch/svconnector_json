@@ -20,6 +20,7 @@ parameters:
 | uri            | string        | URI of the JSON resource to read. This may be any of the following syntaxes:  |
 |                |               |                                                                               |
 |                |               | - absolute file path: :file:`/var/foo/web/fileadmin/import/bar.json`          |
+|                |               |   (within the TYPO3 root path or :code:`TYPO3_CONF_VARS[BE][lockRootPath]`)   |
 |                |               | - file path relative to the TYPO3 root:                                       |
 |                |               |   :file:`fileadmin/import/foo.json`                                           |
 |                |               | - file path using :code:`EXT:`:                                               |
