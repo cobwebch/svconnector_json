@@ -64,7 +64,7 @@ class ConnectorJson extends ConnectorBase
         // Implement post-processing hook
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processRaw'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processRaw'] as $className) {
-                $processor = GeneralUtility::getUserObj($className);
+                $processor = GeneralUtility::makeInstance($className);
                 $result = $processor->processRaw($result, $this);
             }
         }
