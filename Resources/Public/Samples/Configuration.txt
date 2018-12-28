@@ -1,3 +1,3 @@
-uri = http://forge.typo3.org/projects/extension-external_import/issues.json
+uri = https://forge.typo3.org/projects/typo3cms-core/issues.json
 encoding = utf-8
 accept =

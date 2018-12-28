@@ -37,10 +37,10 @@ The next step is simply to call the appropriate method from the API –
 with the right parameters – depending on which format you want to have
 in return. For example::
 
-   $parameters = array(
+   $parameters = [
             'uri' => 'http://forge.typo3.org/projects/extension-external_import/issues.json',
             'encoding' => 'utf-8',
-   );
+   ];
    $data = $connector->fetchArray($parameters);
 
 
@@ -48,5 +48,5 @@ This will return a PHP array from the decoded JSON data. The
 :code:`fetchRaw()` will return the JSON data as a string.
 
 The :code:`fetchXML()` method returns a XML version of the PHP array
-transformed using :code:`\TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs()`.
+transformed using :code:`\TYPO3\CMS\Core\Utility\GeneralUtility::array2xml`.
 

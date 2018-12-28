@@ -31,8 +31,7 @@ class ConnectorJson extends ConnectorBase
 {
     public $prefixId = 'tx_svconnectorjson_sv1';        // Same as class name
     public $scriptRelPath = 'sv1/class.tx_svconnectorjson_sv1.php';    // Path to this script relative to the extension dir.
-    public $extKey = 'svconnector_json';    // The extension key.
-    protected $extConf; // Extension configuration
+    public $extensionKey = 'svconnector_json';    // The extension key.
 
     /**
      * Verifies that the connection is functional
@@ -41,10 +40,9 @@ class ConnectorJson extends ConnectorBase
      *
      * @return boolean TRUE if the service is available
      */
-    public function init()
+    public function init(): bool
     {
         parent::init();
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
         return true;
     }
 
@@ -54,16 +52,18 @@ class ConnectorJson extends ConnectorBase
      *
      * @param array $parameters Parameters for the call
      * @return mixed Server response
+     * @throws \Exception
      */
     public function fetchRaw($parameters)
     {
         $result = $this->query($parameters);
-        if (TYPO3_DLOG || $this->extConf['debug']) {
-            GeneralUtility::devLog('RAW JSON data', $this->extKey, -1, array($result));
-        }
+        $this->logger->info(
+                'RAW JSON data',
+                [$result]
+        );
         // Implement post-processing hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processRaw'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processRaw'] as $className) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processRaw'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processRaw'] as $className) {
                 $processor = GeneralUtility::getUserObj($className);
                 $result = $processor->processRaw($result, $this);
             }
@@ -77,17 +77,18 @@ class ConnectorJson extends ConnectorBase
      *
      * @param array $parameters Parameters for the call
      * @return string XML structure
+     * @throws \Exception
      */
-    public function fetchXML($parameters)
+    public function fetchXML($parameters): string
     {
 
         $xml = $this->fetchArray($parameters);
-        $xml = GeneralUtility::array2xml_cs($xml);
+        $xml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . "\n" . GeneralUtility::array2xml($xml);
 
         // Implement post-processing hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processXML'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processXML'] as $className) {
-                $processor = GeneralUtility::getUserObj($className);
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processXML'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processXML'] as $className) {
+                $processor = GeneralUtility::makeInstance($className);
                 $xml = $processor->processXML($xml, $this);
             }
         }
@@ -100,21 +101,22 @@ class ConnectorJson extends ConnectorBase
      *
      * @param array $parameters Parameters for the call
      * @return array PHP array
+     * @throws \Exception
      */
-    public function fetchArray($parameters)
+    public function fetchArray($parameters): array
     {
         // Get the data from the file
         $result = $this->query($parameters);
         $result = json_decode($result, true);
-
-        if (TYPO3_DLOG || $this->extConf['debug']) {
-            GeneralUtility::devLog('Structured data', $this->extKey, -1, $result);
-        }
+        $this->logger->info(
+                'Structured data',
+                $result
+        );
 
         // Implement post-processing hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processArray'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processArray'] as $className) {
-                $processor = GeneralUtility::getUserObj($className);
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processArray'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processArray'] as $className) {
+                $processor = GeneralUtility::makeInstance($className);
                 $result = $processor->processArray($result, $this);
             }
         }
@@ -127,8 +129,7 @@ class ConnectorJson extends ConnectorBase
      * NOTE: This method does not implement the "processParameters" hook, as it does not make sense in this case.
      *
      * @param array $parameters Parameters for the call
-     * @return array Content of the json
-     * @throws SourceErrorException
+     * @return mixed Content of the json
      * @throws \Exception
      */
     protected function query($parameters)
@@ -136,36 +137,33 @@ class ConnectorJson extends ConnectorBase
         // Check if the json's URI is defined
         if (empty($parameters['uri'])) {
             $message = $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:no_json_defined');
-            if (TYPO3_DLOG || $this->extConf['debug']) {
-                GeneralUtility::devLog($message, $this->extKey, 3);
-            }
-            throw new SourceErrorException(
+            $this->raiseError(
                     $message,
-                    1299257883
+                    1299257883,
+                    [],
+                    SourceErrorException::class
             );
         }
 
         // Define the headers
         $headers = null;
         if (isset($parameters['useragent'])) {
-            $headers = array('User-Agent: ' . $parameters['useragent']);
+            $headers = [
+                    'User-Agent: ' . $parameters['useragent']
+            ];
         }
         if (isset($parameters['accept'])) {
             if (is_array($headers)) {
                 $headers[] = 'Accept: ' . $parameters['accept'];
             } else {
-                $headers = array('Accept: ' . $parameters['accept']);
+                $headers = ['Accept: ' . $parameters['accept']];
             }
         }
 
-        if (TYPO3_DLOG || $this->extConf['debug']) {
-            GeneralUtility::devLog(
-                    'Call parameters and headers',
-                    $this->extKey,
-                    -1,
-                    array('params' => $parameters, 'headers' => $headers)
-            );
-        }
+        $this->logger->info(
+                'Call parameters and headers',
+                ['params' => $parameters, 'headers' => $headers]
+        );
 
         $fileUtility = GeneralUtility::makeInstance(FileUtility::class);
         $data = $fileUtility->getFileContent($parameters['uri'], $headers);
@@ -175,24 +173,23 @@ class ConnectorJson extends ConnectorBase
                     $parameters['uri'],
                     $fileUtility->getError()
             );
-            if (TYPO3_DLOG || $this->extConf['debug']) {
-                GeneralUtility::devLog($message, $this->extKey, 3);
-            }
-            throw new SourceErrorException(
+            $this->raiseError(
                     $message,
-                    1299257894
+                    1299257894,
+                    [],
+                    SourceErrorException::class
             );
         }
         // Check if the current charset is the same as the file encoding
         // Don't do the check if no encoding was defined
-        // TODO: add automatic encoding detection by the reading the encoding attribute in the JSON header
+        // TODO: add automatic encoding detection by reading the encoding attribute in the JSON header
         if (empty($parameters['encoding'])) {
             $encoding = '';
             $isSameCharset = true;
         } else {
             // Standardize charset name and compare
             $encoding = $this->getCharsetConverter()->parse_charset($parameters['encoding']);
-            $isSameCharset = $this->getCharset() == $encoding;
+            $isSameCharset = $this->getCharset() === $encoding;
         }
         // If the charset is not the same, convert data
         if (!$isSameCharset) {
@@ -200,9 +197,9 @@ class ConnectorJson extends ConnectorBase
         }
 
         // Process the result if any hook is registered
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processResponse'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extKey]['processResponse'] as $className) {
-                $processor = GeneralUtility::getUserObj($className);
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processResponse'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processResponse'] as $className) {
+                $processor = GeneralUtility::makeInstance($className);
                 $data = $processor->processResponse($data, $this);
             }
         }

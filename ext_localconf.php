@@ -9,7 +9,7 @@ if (!defined ('TYPO3_MODE')) {
         'connector',
         // Service key
         'tx_svconnectorjson_sv1',
-		array(
+		[
 			'title' => 'JSON connector',
 			'description' => 'Connector service to get JSON Data',
 
@@ -23,5 +23,5 @@ if (!defined ('TYPO3_MODE')) {
 			'exec' => '',
 
 			'className' => \Cobweb\SvconnectorJson\Service\ConnectorJson::class
-		)
+        ]
 );
