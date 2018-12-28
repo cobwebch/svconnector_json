@@ -45,7 +45,7 @@ in return. For example::
 
 
 This will return a PHP array from the decoded JSON data. The
-:code:`fetchRaw()` will return the JSON data as a string.
+:code:`fetchRaw()` method will return the JSON data as a string.
 
 The :code:`fetchXML()` method returns a XML version of the PHP array
 transformed using :code:`\TYPO3\CMS\Core\Utility\GeneralUtility::array2xml`.

@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = [
         'title' => 'Connector service - JSON',
         'description' => 'Connector service for JSON data',
         'category' => 'services',
-        'version' => '2.2.2',
+        'version' => '2.3.0',
         'state' => 'stable',
         'uploadfolder' => 0,
         'createDirs' => '',
@@ -26,8 +26,8 @@ $EM_CONF[$_EXTKEY] = [
                 [
                         'depends' =>
                                 [
-                                        'typo3' => '7.6.0-9.99.99',
-                                        'svconnector' => '3.2.3-0.0.0',
+                                        'typo3' => '8.7.0-9.99.99',
+                                        'svconnector' => '3.3.0-0.0.0',
                                 ],
                         'conflicts' =>
                                 [

@@ -20,10 +20,11 @@
 			"Cobweb\\SvconnectorJson\\": "Classes/"
 		}
 	},
-	"version": "2.2.2",
+	"version": "2.3.0",
 	"require": {
-		"typo3/cms-core": ">=7.6.0,<10.0",
-		"cobweb/svconnector": ">=3.2.3"
+		"ext-json": "*",
+		"typo3/cms-core": ">=8.7.0,<10.0",
+		"cobweb/svconnector": ">=3.3.0"
 	},
 	"replace": {
 		"svconnector_json": "self.version",
