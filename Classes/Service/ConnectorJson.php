@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ConnectorJson extends ConnectorBase
 {
     public $prefixId = 'tx_svconnectorjson_sv1';        // Same as class name
-    public $scriptRelPath = 'sv1/class.tx_svconnectorjson_sv1.php';    // Path to this script relative to the extension dir.
     public $extensionKey = 'svconnector_json';    // The extension key.
 
     /**
@@ -188,7 +187,7 @@ class ConnectorJson extends ConnectorBase
             $isSameCharset = true;
         } else {
             // Standardize charset name and compare
-            $encoding = $this->getCharsetConverter()->parse_charset($parameters['encoding']);
+            $encoding = $parameters['encoding'];
             $isSameCharset = $this->getCharset() === $encoding;
         }
         // If the charset is not the same, convert data
