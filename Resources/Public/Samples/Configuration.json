@@ -1,0 +1,8 @@
+{
+	"uri" : "https://forge.typo3.org/projects/typo3cms-core/issues.json",
+	"encoding" : "UTF-8",
+  	"headers" : {
+  		"Accept" : "application/json",
+  		"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:75.0) Gecko/20100101 Firefox/75.0"
+	}
+}
