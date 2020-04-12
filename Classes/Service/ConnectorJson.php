@@ -184,7 +184,7 @@ class ConnectorJson extends ConnectorBase
         $headers = null;
         if (isset($parameters['headers']) && is_array($parameters['headers']) && count($parameters['headers']) > 0) {
             foreach ($parameters['headers'] as $key => $header) {
-                $headers[] = [$key . ': ' . $header];
+                $headers[] = $key . ': ' . $header;
             }
         }
 
