@@ -117,4 +117,26 @@ class ConnectorJsonTest extends FunctionalTestCase
                 ]
         );
     }
+
+    public function wrongConfigurationProvider(): array
+    {
+        return [
+                'Missing "uri" parameter' => [
+                        [
+                                'encoding' => 'UTF-8'
+                        ]
+                ]
+        ];
+    }
+
+    /**
+     * @param array $configuration
+     * @test
+     * @dataProvider wrongConfigurationProvider
+     * @expectedException \Cobweb\Svconnector\Exception\SourceErrorException
+     */
+    public function wrongConfigurationThrowsException($configuration)
+    {
+        $this->subject->fetchArray($configuration);
+    }
 }

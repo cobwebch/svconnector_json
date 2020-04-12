@@ -21,7 +21,11 @@ which provides the base for all connector services.
 Updating to version 2.4.0
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The "encoding" :ref:`configuration property <configuration>` has change behavior.
+The "accept" and "useragent" :ref:`configuration properties <configuration>`
+have been removed. They have been replaced by a more general "headers" property.
+You will need to update your configurations if you used any of these two properties.
+
+The "encoding" :ref:`configuration property <configuration>` has changed behavior.
 It used to accept all known encoding values plus all the synonyms defined in array
 :php:`\TYPO3\CMS\Core\Charset\CharsetConverter::$synonyms`. This array does not
 exist in TYPO3 v10 anymore, thus usage of synonyms has been dropped. Check

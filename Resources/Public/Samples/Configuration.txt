@@ -1,3 +1,2 @@
 uri = https://forge.typo3.org/projects/typo3cms-core/issues.json
-encoding = utf-8
-accept =
+encoding = UTF-8

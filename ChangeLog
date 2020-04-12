@@ -2,6 +2,7 @@
 
 	* Implement new configuration check API, resolves #5
 	* Update documentation settings, resolves #6
+	* Add new "headers" configuration parameter, resolves #4
 
 2020-04-10 Francois Suter (Idéative)  <typo3@ideative.ch>
 

@@ -23,8 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Service that reads JSON data for the "svconnector_json" extension.
  *
- * @author Prakash A Bhat (Cobweb) <typo3@cobweb.ch>
- * @author Francois Suter (Cobweb) <typo3@cobweb.ch>
+ * @author Francois Suter (Idéative) <typo3@ideative.ch>
  * @package TYPO3
  * @subpackage tx_svconnectorjson
  */
@@ -58,6 +57,17 @@ class ConnectorJson extends ConnectorBase
         // The "uri" parameter is mandatory
         if (empty($parameters['uri'])) {
             $result[AbstractMessage::ERROR][] = $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:no_json_defined');
+        }
+        // Issue error on deprecated parameters
+        if (isset($parameters['useragent'])) {
+            $result[AbstractMessage::ERROR][] = $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:user_agent_removed');
+        }
+        if (isset($parameters['accept'])) {
+            $result[AbstractMessage::ERROR][] = $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:accept_removed');
+        }
+        // The "headers" parameter is expected to be an array
+        if (isset($parameters['headers']) && !is_array($parameters['headers'])) {
+            $result[AbstractMessage::WARNING][] = $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:headers_must_be_array');
         }
         return $result;
     }
@@ -172,16 +182,9 @@ class ConnectorJson extends ConnectorBase
 
         // Define the headers
         $headers = null;
-        if (isset($parameters['useragent'])) {
-            $headers = [
-                    'User-Agent: ' . $parameters['useragent']
-            ];
-        }
-        if (isset($parameters['accept'])) {
-            if (is_array($headers)) {
-                $headers[] = 'Accept: ' . $parameters['accept'];
-            } else {
-                $headers = ['Accept: ' . $parameters['accept']];
+        if (isset($parameters['headers']) && is_array($parameters['headers']) && count($parameters['headers']) > 0) {
+            foreach ($parameters['headers'] as $key => $header) {
+                $headers[] = [$key . ': ' . $header];
             }
         }
 

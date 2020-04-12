@@ -9,6 +9,15 @@
 			<trans-unit id="json_not_fetched" xml:space="preserve">
 				<source>JSON data %1$s could not be fetched with error: %2$s</source>
 			</trans-unit>
+			<trans-unit id="headers_must_be_array" xml:space="preserve">
+				<source>The "headers" parameter must be an array. It will be ignored.</source>
+			</trans-unit>
+			<trans-unit id="user_agent_removed" xml:space="preserve">
+				<source>The "useragent" parameter is not used anymore. Use the "headers" parameter instead.</source>
+			</trans-unit>
+			<trans-unit id="accept_removed" xml:space="preserve">
+				<source>The "accept" parameter is not used anymore. Use the "headers" parameter instead.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
