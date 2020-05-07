@@ -16,7 +16,7 @@
 			"Cobweb\\SvconnectorJson\\": "Classes/"
 		}
 	},
-	"version": "2.3.0",
+	"version": "2.4.0",
 	"require": {
 		"ext-json": "*",
 		"typo3/cms-core": ">=8.7.0,<11.0",
