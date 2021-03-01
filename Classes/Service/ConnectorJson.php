@@ -183,9 +183,7 @@ class ConnectorJson extends ConnectorBase
         // Define the headers
         $headers = null;
         if (isset($parameters['headers']) && is_array($parameters['headers']) && count($parameters['headers']) > 0) {
-            foreach ($parameters['headers'] as $key => $header) {
-                $headers[] = $key . ': ' . $header;
-            }
+            $headers = $parameters['headers'];
         }
 
         $this->logger->info(
