@@ -1,3 +1,8 @@
+2021-03-19 Francois Suter (Idéative)  <typo3@ideative.ch>
+
+	* Fix passing of headers for TYPO3 9 and 10 (thanks to Florian Rival)
+	* Release version 2.4.2
+
 2021-02-22 Francois Suter (Idéative)  <typo3@ideative.ch>
 
 	* Update composer manifest
