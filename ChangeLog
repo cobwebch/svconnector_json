@@ -1,3 +1,7 @@
+2021-04-06 Francois Suter (Idéative)  <typo3@ideative.ch>
+
+    * Ensure compatibility with TYPO3 11, drop support for TYPO3 8 and 9
+
 2021-03-19 Francois Suter (Idéative)  <typo3@ideative.ch>
 
 	* Fix passing of headers for TYPO3 9 and 10 (thanks to Florian Rival)

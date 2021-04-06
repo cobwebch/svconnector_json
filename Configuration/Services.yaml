@@ -1,0 +1,12 @@
+# Configuration/Services.yaml
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Cobweb\SvconnectorJson\:
+    resource: '../Classes/*'
+
+  Cobweb\SvconnectorJson\Service\ConnectorJson:
+    public: true
