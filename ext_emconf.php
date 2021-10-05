@@ -11,30 +11,30 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = [
-        'title' => 'Connector service - JSON',
-        'description' => 'Connector service for JSON data',
-        'category' => 'services',
-        'version' => '2.4.2',
-        'state' => 'stable',
-        'uploadfolder' => 0,
-        'createDirs' => '',
-        'clearcacheonload' => 0,
-        'author' => 'Francois Suter (Idéative)',
-        'author_email' => 'typo3@ideative.ch',
-        'author_company' => '',
-        'constraints' =>
+    'title' => 'Connector service - JSON',
+    'description' => 'Connector service for JSON data',
+    'category' => 'services',
+    'version' => '3.0.0',
+    'state' => 'stable',
+    'uploadfolder' => 0,
+    'createDirs' => '',
+    'clearcacheonload' => 0,
+    'author' => 'Francois Suter (Idéative)',
+    'author_email' => 'typo3@ideative.ch',
+    'author_company' => '',
+    'constraints' =>
+        [
+            'depends' =>
                 [
-                        'depends' =>
-                                [
-                                        'typo3' => '10.4.99-11.99.99',
-                                        'svconnector' => '3.4.0-0.0.0',
-                                ],
-                        'conflicts' =>
-                                [
-                                ],
-                        'suggests' =>
-                                [
-                                ],
+                    'typo3' => '10.4.0-11.5.99',
+                    'svconnector' => '4.0.0-0.0.0',
                 ],
+            'conflicts' =>
+                [
+                ],
+            'suggests' =>
+                [
+                ],
+        ],
 ];
 
