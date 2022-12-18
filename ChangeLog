@@ -1,6 +1,7 @@
 2022-12-18 Francois Suter (Idéative)  <typo3@ideative.ch>
 
 	* Switch to new connector service registration API, resolves #11
+	* Harden JSON decoding error handling, resolves #8
 
 2021-10-05 Francois Suter (Idéative)  <typo3@ideative.ch>
 

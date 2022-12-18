@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Cobweb\SvconnectorJson\Service;
 
 /*
@@ -22,10 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service that reads JSON data for the "svconnector_json" extension.
- *
- * @author Francois Suter (Idéative) <typo3@ideative.ch>
- * @package TYPO3
- * @subpackage tx_svconnectorjson
  */
 class ConnectorJson extends ConnectorBase
 {
@@ -66,18 +65,26 @@ class ConnectorJson extends ConnectorBase
         $result = parent::checkConfiguration($parameters);
         // The "uri" parameter is mandatory
         if (empty($parameters['uri'])) {
-            $result[AbstractMessage::ERROR][] = $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:no_json_defined');
+            $result[AbstractMessage::ERROR][] = $this->sL(
+                'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:no_json_defined'
+            );
         }
         // Issue error on deprecated parameters
         if (isset($parameters['useragent'])) {
-            $result[AbstractMessage::ERROR][] = $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:user_agent_removed');
+            $result[AbstractMessage::ERROR][] = $this->sL(
+                'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:user_agent_removed'
+            );
         }
         if (isset($parameters['accept'])) {
-            $result[AbstractMessage::ERROR][] = $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:accept_removed');
+            $result[AbstractMessage::ERROR][] = $this->sL(
+                'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:accept_removed'
+            );
         }
         // The "headers" parameter is expected to be an array
         if (isset($parameters['headers']) && !is_array($parameters['headers'])) {
-            $result[AbstractMessage::WARNING][] = $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:headers_must_be_array');
+            $result[AbstractMessage::WARNING][] = $this->sL(
+                'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:headers_must_be_array'
+            );
         }
         return $result;
     }
@@ -94,8 +101,8 @@ class ConnectorJson extends ConnectorBase
     {
         $result = $this->query($parameters);
         $this->logger->info(
-                'RAW JSON data',
-                [$result]
+            'RAW JSON data',
+            [$result]
         );
         // Implement post-processing hook
         $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processRaw'] ?? null;
@@ -118,7 +125,6 @@ class ConnectorJson extends ConnectorBase
      */
     public function fetchXML(array $parameters = []): string
     {
-
         $xml = $this->fetchArray($parameters);
         $xml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . "\n" . GeneralUtility::array2xml($xml);
 
@@ -145,10 +151,10 @@ class ConnectorJson extends ConnectorBase
     {
         // Get the data from the file
         $result = $this->query($parameters);
-        $result = json_decode($result, true);
+        $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
         $this->logger->info(
-                'Structured data',
-                $result
+            'Structured data',
+            $result
         );
 
         // Implement post-processing hook
@@ -186,10 +192,10 @@ class ConnectorJson extends ConnectorBase
                 $message .= $problem;
             }
             $this->raiseError(
-                    $message,
-                    1299257883,
-                    [],
-                    SourceErrorException::class
+                $message,
+                1299257883,
+                [],
+                SourceErrorException::class
             );
         }
 
@@ -200,23 +206,23 @@ class ConnectorJson extends ConnectorBase
         }
 
         $this->logger->info(
-                'Call parameters and headers',
-                ['params' => $parameters, 'headers' => $headers]
+            'Call parameters and headers',
+            ['params' => $parameters, 'headers' => $headers]
         );
 
         $fileUtility = GeneralUtility::makeInstance(FileUtility::class);
         $data = $fileUtility->getFileContent($parameters['uri'], $headers);
         if ($data === false) {
             $message = sprintf(
-                    $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:json_not_fetched'),
-                    $parameters['uri'],
-                    $fileUtility->getError()
+                $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:json_not_fetched'),
+                $parameters['uri'],
+                $fileUtility->getError()
             );
             $this->raiseError(
-                    $message,
-                    1299257894,
-                    [],
-                    SourceErrorException::class
+                $message,
+                1299257894,
+                [],
+                SourceErrorException::class
             );
         }
         // Check if the current charset is the same as the file encoding
