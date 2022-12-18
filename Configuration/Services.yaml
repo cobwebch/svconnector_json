@@ -10,3 +10,5 @@ services:
 
   Cobweb\SvconnectorJson\Service\ConnectorJson:
     public: true
+    arguments:
+      - !tagged_iterator connector.service

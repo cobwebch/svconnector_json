@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cobweb\SvconnectorJson\Unit\Tests;
 
 /*
@@ -16,6 +18,7 @@ namespace Cobweb\SvconnectorJson\Unit\Tests;
  */
 
 use Cobweb\Svconnector\Domain\Repository\ConnectorRepository;
+use Cobweb\SvconnectorJson\Service\ConnectorJson;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -33,21 +36,16 @@ class ConnectorJsonTest extends FunctionalTestCase
             'typo3conf/ext/svconnector_json',
     ];
 
-    /**
-     * @var \Cobweb\SvconnectorJson\Service\ConnectorJson
-     */
-    protected $subject;
+    protected ConnectorJson $subject;
 
     /**
      * Sets up the test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         try {
-            /** @var ConnectorRepository $connectorRepository */
-            $connectorRepository = GeneralUtility::makeInstance(ConnectorRepository::class);
-            $this->subject = $connectorRepository->findServiceByKey('tx_svconnectorjson_sv1');
+            $this->subject = GeneralUtility::makeInstance(ConnectorJson::class);
         } catch (\Exception $e) {
             self::markTestSkipped($e->getMessage());
         }
@@ -60,7 +58,7 @@ class ConnectorJsonTest extends FunctionalTestCase
      */
     public function sourceDataProvider(): array
     {
-        $data = [
+        return [
                 'UTF-8 data' => [
                         'parameters' => [
                                 'uri' => 'EXT:svconnector_json/Tests/Functional/Fixtures/data_utf8.json'
@@ -87,7 +85,6 @@ class ConnectorJsonTest extends FunctionalTestCase
                         ]
                 ]
         ];
-        return $data;
     }
 
     /**
@@ -99,7 +96,7 @@ class ConnectorJsonTest extends FunctionalTestCase
      * @dataProvider sourceDataProvider
      * @throws \Exception
      */
-    public function readingJsonFileIntoArray($parameters, $result)
+    public function readingJsonFileIntoArray(array $parameters, array $result): void
     {
         $data = $this->subject->fetchArray($parameters);
         self::assertSame($result, $data);
@@ -107,10 +104,10 @@ class ConnectorJsonTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \Cobweb\Svconnector\Exception\SourceErrorException
      */
-    public function readingUnknownFileThrowsException()
+    public function readingUnknownFileThrowsException(): void
     {
+        $this->expectException(\Cobweb\Svconnector\Exception\SourceErrorException::class);
         $this->subject->fetchArray(
                 [
                         'filename' => 'foobar.xml'
@@ -131,12 +128,13 @@ class ConnectorJsonTest extends FunctionalTestCase
 
     /**
      * @param array $configuration
+     * @throws \Exception
      * @test
      * @dataProvider wrongConfigurationProvider
-     * @expectedException \Cobweb\Svconnector\Exception\SourceErrorException
      */
-    public function wrongConfigurationThrowsException($configuration)
+    public function wrongConfigurationThrowsException(array $configuration): void
     {
+        $this->expectException(\Cobweb\Svconnector\Exception\SourceErrorException::class);
         $this->subject->fetchArray($configuration);
     }
 }

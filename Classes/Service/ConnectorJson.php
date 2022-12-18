@@ -29,8 +29,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ConnectorJson extends ConnectorBase
 {
-    public $prefixId = 'tx_svconnectorjson_sv1';        // Same as class name
-    public $extensionKey = 'svconnector_json';    // The extension key.
+    protected string $extensionKey = 'svconnector_json';
+
+    protected string $type = 'json';
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getName(): string
+    {
+        return 'JSON connector';
+    }
 
     /**
      * Verifies that the connection is functional
@@ -39,9 +50,8 @@ class ConnectorJson extends ConnectorBase
      *
      * @return boolean TRUE if the service is available
      */
-    public function init(): bool
+    public function isAvailable(): bool
     {
-        parent::init();
         return true;
     }
 
@@ -51,7 +61,7 @@ class ConnectorJson extends ConnectorBase
      * @param array $parameters Connector call parameters
      * @return array
      */
-    public function checkConfiguration($parameters): array
+    public function checkConfiguration(array $parameters = []): array
     {
         $result = parent::checkConfiguration($parameters);
         // The "uri" parameter is mandatory
@@ -80,7 +90,7 @@ class ConnectorJson extends ConnectorBase
      * @return mixed Server response
      * @throws \Exception
      */
-    public function fetchRaw($parameters)
+    public function fetchRaw(array $parameters = [])
     {
         $result = $this->query($parameters);
         $this->logger->info(
@@ -106,7 +116,7 @@ class ConnectorJson extends ConnectorBase
      * @return string XML structure
      * @throws \Exception
      */
-    public function fetchXML($parameters): string
+    public function fetchXML(array $parameters = []): string
     {
 
         $xml = $this->fetchArray($parameters);
@@ -131,7 +141,7 @@ class ConnectorJson extends ConnectorBase
      * @return array PHP array
      * @throws \Exception
      */
-    public function fetchArray($parameters): array
+    public function fetchArray(array $parameters = []): array
     {
         // Get the data from the file
         $result = $this->query($parameters);
@@ -161,7 +171,7 @@ class ConnectorJson extends ConnectorBase
      * @return mixed Content of the json
      * @throws \Exception
      */
-    protected function query($parameters)
+    protected function query(array $parameters = [])
     {
         // Check the configuration
         $problems = $this->checkConfiguration($parameters);
