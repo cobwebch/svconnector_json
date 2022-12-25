@@ -19,6 +19,7 @@
 	"require": {
 		"ext-json": "*",
 		"typo3/cms-core": "^11.5 || ^12.0",
+		"php": "^7.4 || ^8.0 || ^8.1",
 		"cobweb/svconnector": "dev-develop"
 	},
 	"replace": {
