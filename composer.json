@@ -19,7 +19,7 @@
 	"require": {
 		"ext-json": "*",
 		"typo3/cms-core": "^11.5 || ^12.0",
-		"cobweb/svconnector": "^4.0"
+		"cobweb/svconnector": "dev-develop"
 	},
 	"replace": {
 		"typo3-ter/svconnector_json": "self.version"
