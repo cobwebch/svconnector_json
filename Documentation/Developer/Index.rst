@@ -16,22 +16,12 @@ task. The first step is to get the proper service object:
 
 .. code-block:: php
 
-   $services = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService('connector', 'json');
-   if ($services === false) {
-           // Issue an error
-   } else {
-           $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService('connector', 'json');
-   }
+   $registry = GeneralUtility::makeInstance(\Cobweb\Svconnector\Registry\ConnectorRegistry::class);
+   $connector = $registry->getServiceForType('json');
 
-
-On the first line, you get a list of all services that are of type
-"connector" and subtype "json". If the result if false, it means no
-appropriate services were found and you probably want to issue an
-error message.
-
-On the contrary you are assured that there's at least one valid
-service and you can get an instance of it by calling
-:code:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService()`.
+An additional step could be to check if the service is indeed available,
+by calling :php:`$connector->isAvailable()`, although - in this particular
+case - the Feed/XML connector service is always available.
 
 The next step is simply to call the appropriate method from the API –
 with the right parameters – depending on which format you want to have
