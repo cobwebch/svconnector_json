@@ -21,7 +21,7 @@ task. The first step is to get the proper service object:
 
 An additional step could be to check if the service is indeed available,
 by calling :php:`$connector->isAvailable()`, although - in this particular
-case - the Feed/XML connector service is always available.
+case - the JSON connector service is always available.
 
 The next step is simply to call the appropriate method from the API –
 with the right parameters – depending on which format you want to have
