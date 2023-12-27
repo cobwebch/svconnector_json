@@ -152,7 +152,7 @@ class ConnectorJson extends ConnectorBase
         // Get the data from the file
         $result = $this->query($parameters);
         $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
-        if ($result === null) {
+        if (!is_array($result)) {
             throw new \InvalidArgumentException(
                 'JSON structure could not be decoded',
                 1671383061
