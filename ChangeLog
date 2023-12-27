@@ -1,6 +1,7 @@
 2023-12-27 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-    * Improve check on result from JSON decoding, resolves #12
+	* Improve check on result from JSON decoding, resolves #12
+	* Release version 4.1.1
 
 2023-08-07 Francois Suter (Idéative)  <typo3@ideative.ch>
 
@@ -37,7 +38,7 @@
 
 2021-04-06 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-    * Ensure compatibility with TYPO3 11, drop support for TYPO3 8 and 9
+	* Ensure compatibility with TYPO3 11, drop support for TYPO3 8 and 9
 
 2021-03-19 Francois Suter (Idéative)  <typo3@ideative.ch>
 
