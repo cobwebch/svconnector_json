@@ -69,17 +69,6 @@ class ConnectorJson extends ConnectorBase
                 'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:no_json_defined'
             );
         }
-        // Issue error on deprecated parameters
-        if (isset($parameters['useragent'])) {
-            $result[AbstractMessage::ERROR][] = $this->sL(
-                'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:user_agent_removed'
-            );
-        }
-        if (isset($parameters['accept'])) {
-            $result[AbstractMessage::ERROR][] = $this->sL(
-                'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:accept_removed'
-            );
-        }
         // The "headers" parameter is expected to be an array
         if (isset($parameters['headers']) && !is_array($parameters['headers'])) {
             $result[AbstractMessage::WARNING][] = $this->sL(

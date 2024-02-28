@@ -1,3 +1,7 @@
+2024-02-28 Francois Suter (Idéative)  <typo3@ideative.ch>
+
+    * Drop warning about parameters deprecated a long time ago, resolves #13
+
 2023-12-27 Francois Suter (Idéative)  <typo3@ideative.ch>
 
 	* Improve check on result from JSON decoding, resolves #12
