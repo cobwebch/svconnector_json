@@ -12,62 +12,85 @@ Configuration
 -------------
 
 The various "fetch" methods of the connector all take the same
-parameters:
+parameters, described below.
 
-+----------------+---------------+-------------------------------------------------------------------------------------------------------------+
-| Parameter      | Data type     | Description                                                                                                 |
-+================+===============+=============================================================================================================+
-| uri            | string        | URI of the JSON resource to read. This may be any of the following syntaxes:                                |
-|                |               |                                                                                                             |
-|                |               | - absolute file path: :file:`/var/foo/web/fileadmin/import/bar.json`                                        |
-|                |               |   (within the TYPO3 root path or :code:`TYPO3_CONF_VARS[BE][lockRootPath]`)                                 |
-|                |               | - file path relative to the TYPO3 root:                                                                     |
-|                |               |   :file:`fileadmin/import/foo.json`                                                                         |
-|                |               | - file path using :code:`EXT:`:                                                                             |
-|                |               |   :file:`EXT:foo/Resources/Private/Data/bar.json`                                                           |
-|                |               | - fully qualified URL, e.g. :file:`http://www.example.com/foo.json`                                         |
-|                |               | - FAL reference with storage ID and file identifier:                                                        |
-|                |               |   :file:`FAL:2:/foo.json`                                                                                   |
-|                |               | - custom syntax: :file:`MYKEY:whatever_you_want`, see                                                       |
-|                |               |   :ref:`Connector Services <svconnector:developers-utilities-reading-files>`                                |
-+----------------+---------------+-------------------------------------------------------------------------------------------------------------+
-| encoding       | string        | Encoding of the data found in the file. This value must match any of                                        |
-|                |               | the encoding values recognized by the PHP libray "mbstring". See                                            |
-|                |               | https://www.php.net/manual/en/mbstring.supported-encodings.php                                              |
-+----------------+---------------+-------------------------------------------------------------------------------------------------------------+
-| headers        | array         | Key-value pairs of headers that should be sent along with the request.                                      |
-|                |               | The syntax is as follows:                                                                                   |
-|                |               |                                                                                                             |
-|                |               | **Example:**                                                                                                |
-|                |               |                                                                                                             |
-|                |               | .. code-block:: php                                                                                         |
-|                |               |                                                                                                             |
-|                |               |    'headers' => [                                                                                           |
-|                |               |        'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:75.0) Gecko/20100101 Firefox/75.0' |
-|                |               |        'Accept' => 'application/json'                                                                       |
-|                |               |    ]                                                                                                        |
-+----------------+---------------+-------------------------------------------------------------------------------------------------------------+
-| useragent      | string        | **This parameter was removed. Please use "headers" instead.**                                               |
-|                |               |                                                                                                             |
-|                |               | User agent to fake. This is sometimes necessary to bypass access                                            |
-|                |               | restrictions on some sites. Don't include the "User-Agent:" part of                                         |
-|                |               | the header.                                                                                                 |
-|                |               |                                                                                                             |
-|                |               | **Example:**                                                                                                |
-|                |               |                                                                                                             |
-|                |               | Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.13)                                         |
-|                |               | Gecko/20101203 Firefox/3.6.13                                                                               |
-+----------------+---------------+-------------------------------------------------------------------------------------------------------------+
-| accept         | string        | **This parameter was removed. Please use "headers" instead.**                                               |
-|                |               |                                                                                                             |
-|                |               | Type of content accepted. This is sometimes necessary to really get                                         |
-|                |               | the data in JSON format. Don't include the "Accept:" part of                                                |
-|                |               | the header.                                                                                                 |
-|                |               |                                                                                                             |
-|                |               | **Example:**                                                                                                |
-|                |               |                                                                                                             |
-|                |               | application/json                                                                                            |
-+----------------+---------------+-------------------------------------------------------------------------------------------------------------+
+
+.. _configuration-uri:
+
+uri
+^^^
+
+Type
+  string
+
+Description
+  URI of the JSON resource to read. This may be any of the following syntaxes:
+
+  - absolute file path: :file:`/var/foo/web/fileadmin/import/bar.json`
+    (within the TYPO3 root path or :code:`TYPO3_CONF_VARS[BE][lockRootPath]`)
+  - file path relative to the TYPO3 root:
+    :file:`fileadmin/import/foo.json`
+  - file path using :code:`EXT:`:
+    :file:`EXT:foo/Resources/Private/Data/bar.json`
+  - fully qualified URL, e.g. :file:`http://www.example.com/foo.json`
+  - FAL reference with storage ID and file identifier:
+    :file:`FAL:2:/foo.json`
+  - custom syntax: :file:`MYKEY:whatever_you_want`, see
+    :ref:`Connector Services <svconnector:developers-utilities-reading-files>`
+
+
+.. _configuration-encoding:
+
+encoding
+^^^^^^^^
+
+Type
+  string
+
+Description
+  Encoding of the data found in the file. This value must match any of
+  the encoding values recognized by the PHP libray "mbstring". See
+  https://www.php.net/manual/en/mbstring.supported-encodings.php
+
+
+.. _configuration-headers:
+
+headers
+^^^^^^^
+
+Type
+  array
+
+Description
+  Key-value pairs of headers that should be sent along with the request.
+
+Example
+  .. code-block:: php
+      'headers' => [
+         'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:75.0) Gecko/20100101 Firefox/75.0',
+         'Accept' => 'application/json',
+      ]
+
+
+.. _configuration-query-parameters:
+
+queryParameters
+^^^^^^^^^^^^^^^
+
+Type
+  array
+
+Description
+  Key-value pairs of query parameters that should be added to the query.
+
+Example
+  .. code-block:: php
+      'queryParameters' => [
+         'foo' => 'bar',
+      ]
+
+  Assuming that the `uri` parameter is "https://example.com", the full URI that will be queried
+  is "https://example.com?foo=bar".
 
 .. note::
 

@@ -1,6 +1,7 @@
 2024-02-28 Francois Suter (Idéative)  <typo3@ideative.ch>
 
     * Drop warning about parameters deprecated a long time ago, resolves #13
+    * Add "queryParameters" parameter, resolves #14
 
 2023-12-27 Francois Suter (Idéative)  <typo3@ideative.ch>
 

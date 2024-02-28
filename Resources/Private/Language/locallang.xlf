@@ -12,6 +12,9 @@
 			<trans-unit id="headers_must_be_array" xml:space="preserve">
 				<source>The "headers" parameter must be an array. It will be ignored.</source>
 			</trans-unit>
+			<trans-unit id="query_parameters_must_be_array" xml:space="preserve">
+				<source>The "queryParameters" parameter must be an array. It will be ignored.</source>
+			</trans-unit>
 			<trans-unit id="user_agent_removed" xml:space="preserve">
 				<source>The "useragent" parameter is not used anymore. Use the "headers" parameter instead.</source>
 			</trans-unit>

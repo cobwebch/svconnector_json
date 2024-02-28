@@ -75,6 +75,12 @@ class ConnectorJson extends ConnectorBase
                 'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:headers_must_be_array'
             );
         }
+        // The "queryParameters" parameter is expected to be an array
+        if (isset($parameters['queryParameters']) && !is_array($parameters['queryParameters'])) {
+            $result[AbstractMessage::WARNING][] = $this->sL(
+                'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:query_parameters_must_be_array'
+            );
+        }
         return $result;
     }
 
@@ -206,11 +212,15 @@ class ConnectorJson extends ConnectorBase
         );
 
         $fileUtility = GeneralUtility::makeInstance(FileUtility::class);
-        $data = $fileUtility->getFileContent($parameters['uri'], $headers);
+        $uri = $parameters['uri'];
+        if (isset($parameters['queryParameters'])) {
+            $uri = sprintf('%s?%s', $uri, http_build_query($parameters['queryParameters']));
+        }
+        $data = $fileUtility->getFileContent($uri, $headers);
         if ($data === false) {
             $message = sprintf(
                 $this->sL('LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:json_not_fetched'),
-                $parameters['uri'],
+                $uri,
                 $fileUtility->getError()
             );
             $this->raiseError(
