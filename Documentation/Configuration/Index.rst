@@ -65,6 +65,8 @@ Description
   Key-value pairs of headers that should be sent along with the request.
 
 Example
+  Example headers for settings an alternate user agent and defining what reponse
+  format to accept.
 
   .. code-block:: php
 
@@ -88,6 +90,7 @@ Description
   described above.
 
 Example
+  Assuming that the `uri` parameter is "https://example.com", with the following quey parameters:
 
   .. code-block:: php
 
@@ -95,8 +98,7 @@ Example
          'foo' => 'bar',
       ]
 
-  Assuming that the `uri` parameter is "https://example.com", the full URI that will be queried
-  is "https://example.com?foo=bar".
+  the full URI to be queried will be "https://example.com?foo=bar".
 
 
 .. _configuration-paginator:
