@@ -81,7 +81,9 @@ Type
   array
 
 Description
-  Key-value pairs of query parameters that should be added to the query.
+  Key-value pairs of query parameters that should be added to the URI. This will
+  only when the URI is a fully qualified URL and not in any of the other possibilities
+  described above.
 
 Example
   .. code-block:: php
