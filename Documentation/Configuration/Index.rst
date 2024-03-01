@@ -129,14 +129,3 @@ Example
   To enable pagination for another type of data source with a custom Paginator:
   .. code-block:: php
       'paginator' => \MyVendorName\MyExtension\Paginator\FooPaginator::class
-
-
-.. note::
-
-   When using this connector with **external_import**, please mind that the JSON data
-   may not fit the structure expected by **external_import**. Indeed this extension
-   expects data of type array to be purely two-dimensional, i.e. an indexed list of
-   associative sub-arrays.
-
-   Use a hook like :code:`processArray` in **svconnector_json** to transform the
-   data's structure before feeding it into **external_import**.

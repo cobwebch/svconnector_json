@@ -1,6 +1,7 @@
 2024-03-01 Francois Suter (Idéative)  <typo3@ideative.ch>
 
     * Add support for paginated results, resolves #10
+    * Remove note about external_import and processArray hook, resolves #15
 
 2024-02-28 Francois Suter (Idéative)  <typo3@ideative.ch>
 
