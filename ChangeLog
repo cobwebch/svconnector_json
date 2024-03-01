@@ -1,3 +1,7 @@
+2024-03-01 Francois Suter (Idéative)  <typo3@ideative.ch>
+
+    * Add support for paginated results, resolves #10
+
 2024-02-28 Francois Suter (Idéative)  <typo3@ideative.ch>
 
     * Drop warning about parameters deprecated a long time ago, resolves #13

@@ -20,6 +20,8 @@ namespace Cobweb\SvconnectorJson\Service;
 use Cobweb\Svconnector\Exception\SourceErrorException;
 use Cobweb\Svconnector\Service\ConnectorBase;
 use Cobweb\Svconnector\Utility\FileUtility;
+use Cobweb\SvconnectorJson\Paginator\AbstractPaginator;
+use Cobweb\SvconnectorJson\Paginator\HydraPaginator;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -136,7 +138,7 @@ class ConnectorJson extends ConnectorBase
     }
 
     /**
-     * This method calls the query and returns the results from the response as a PHP array
+     * Fetch the JSON data and return it as an array
      *
      * @param array $parameters Parameters for the call
      * @return array PHP array
@@ -144,7 +146,7 @@ class ConnectorJson extends ConnectorBase
      */
     public function fetchArray(array $parameters = []): array
     {
-        // Get the data from the file
+        // Get the data from the source
         $result = $this->query($parameters);
         $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($result)) {
@@ -153,9 +155,53 @@ class ConnectorJson extends ConnectorBase
                 1671383061
             );
         }
+
+        $paginator = $this->getPaginator($parameters);
+        if ($paginator === null) {
+            $data = $result;
+        } else {
+            $currentPage = $paginator->getStartPage();
+            $pagingParameter = $paginator->getPagingParameter();
+            $hasNextPage = true;
+            // Assemble a list of all results, including the first one
+            $allResults = [$result];
+            do {
+                $paginator->setData($result);
+                $nextPage = $paginator->getNextPage();
+                if ($nextPage > $currentPage) {
+                    $mergedQueyParameters = array_merge(
+                        $parameters['queryParameters'] ?? [],
+                        [
+                            $pagingParameter => $nextPage
+                        ]
+                    );
+                    $currentParameters = $parameters;
+                    $currentParameters['queryParameters'] = $mergedQueyParameters;
+                    $result = $this->query($currentParameters);
+                    $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
+                    if (!is_array($result)) {
+                        throw new \InvalidArgumentException(
+                            sprintf(
+                                'JSON structure could not be decoded, page %d',
+                                $nextPage
+                            ),
+                            1709283781
+                        );
+                    }
+                    $allResults[] = $result;
+                    $currentPage = $nextPage;
+                } else {
+                    $hasNextPage = false;
+                }
+            } while ($hasNextPage);
+            // Aggregate the results, if the query was paginated
+            $data = $paginator->aggregate($allResults);
+        }
+
+        // Log the data
         $this->logger->info(
             'Structured data',
-            $result
+            $data
         );
 
         // Implement post-processing hook
@@ -163,19 +209,17 @@ class ConnectorJson extends ConnectorBase
         if (is_array($hooks)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processArray'] as $className) {
                 $processor = GeneralUtility::makeInstance($className);
-                $result = $processor->processArray($result, $this);
+                $data = $processor->processArray($data, $this);
             }
         }
-        return $result;
+        return $data;
     }
 
     /**
-     * Reads the content of the JSON DATA defined in the parameters and returns it as an array.
-     *
-     * NOTE: This method does not implement the "processParameters" hook, as it does not make sense in this case.
+     * Return the JSON data (as a string) fetched with the given parameters
      *
      * @param array $parameters Parameters for the call
-     * @return mixed Content of the json
+     * @return mixed JSON content (string)
      * @throws \Exception
      */
     protected function query(array $parameters = [])
@@ -257,5 +301,37 @@ class ConnectorJson extends ConnectorBase
 
         // Return the result
         return $data;
+    }
+
+    /**
+     * Return a paginator object, if defined
+     *
+     * @param array $parameters
+     * @return AbstractPaginator|null
+     */
+    protected function getPaginator(array $parameters): ?AbstractPaginator
+    {
+        $paginatorSetting = $parameters['paginator'] ?? '';
+        if ($paginatorSetting === '') {
+            return null;
+        }
+        // Consider predefined paginators
+        if ($paginatorSetting === 'hydra') {
+            $paginatorClass = HydraPaginator::class;
+        } else {
+            $paginatorClass = $paginatorSetting;
+        }
+        $paginator = GeneralUtility::makeInstance($paginatorClass);
+        if (!$paginator instanceof AbstractPaginator) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Class %s does not extend class %s',
+                    $paginator,
+                    AbstractPaginator::class
+                ),
+                1709280188
+            );
+        }
+        return $paginator;
     }
 }

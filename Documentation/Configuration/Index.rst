@@ -94,6 +94,43 @@ Example
   Assuming that the `uri` parameter is "https://example.com", the full URI that will be queried
   is "https://example.com?foo=bar".
 
+
+.. _configuration-paginator:
+
+paginator
+^^^^^^^^^
+
+Type
+  string
+
+Description
+  Many APIs present results that are paginated. Since these pagination mechanisms can be
+  quite diverse, this extension cannot provide a solution that fits all situations.
+
+  Out of the box, the JSON-Hydra pagination format is supported, with the use of the "hydra" keyword.
+
+  For any other pagination mechanism, you will need to :ref:`develop your own Paginator class <developer-paginators>`.
+
+  The results are aggregated as if all data had been fetched in a single call.
+
+  .. important::
+     This works only with :code:`fetchArray()` and :code:`fetchXMLl()`. Since :code:`fetchRaw`
+     returns the original JSON data as a string, it only ever returns the result of the first page.
+
+  .. warning::
+     If you use pagination, you **need** to pass any other quey parameter from the `uri`
+     with the `queryParameters` and not have them directly in the `uri`.
+
+Example
+  To enable pagination for a Hydra data source:
+  .. code-block:: php
+      'paginator' => 'hydra'
+
+  To enable pagination for another type of data source with a custom Paginator:
+  .. code-block:: php
+      'paginator' => \MyVendorName\MyExtension\Paginator\FooPaginator::class
+
+
 .. note::
 
    When using this connector with **external_import**, please mind that the JSON data
