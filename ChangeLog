@@ -2,6 +2,7 @@
 
     * Add support for paginated results, resolves #10
     * Remove note about external_import and processArray hook, resolves #15
+    * Release version 4.2.0
 
 2024-02-28 Francois Suter (Idéative)  <typo3@ideative.ch>
 
@@ -10,120 +11,120 @@
 
 2023-12-27 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Improve check on result from JSON decoding, resolves #12
-	* Release version 4.1.1
+    * Improve check on result from JSON decoding, resolves #12
+    * Release version 4.1.1
 
 2023-08-07 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Verify compatibility with PHP 8.2
-	* Release version 4.1.0
+    * Verify compatibility with PHP 8.2
+    * Release version 4.1.0
 
 2023-05-02 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Update example code for service instanciation
-	* Verify compatibility with TYPO3 12 LTS
-	* Relase version 4.0.1
+    * Update example code for service instanciation
+    * Verify compatibility with TYPO3 12 LTS
+    * Relase version 4.0.1
 
 2022-12-27 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Relase version 4.0.0
+    * Relase version 4.0.0
 
 2022-12-25 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Ensure compatibility with TYPO3 12, resolves #9
-	* Ensure compatibility with PHP 8.1
+    * Ensure compatibility with TYPO3 12, resolves #9
+    * Ensure compatibility with PHP 8.1
 
 2022-12-18 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Switch to new connector service registration API, resolves #11
-	* Harden JSON decoding error handling, resolves #8
+    * Switch to new connector service registration API, resolves #11
+    * Harden JSON decoding error handling, resolves #8
 
 2021-10-05 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Relase version 3.0.0
+    * Relase version 3.0.0
 
 2021-09-07 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Ensure compatibility with PHP 8
+    * Ensure compatibility with PHP 8
 
 2021-04-06 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Ensure compatibility with TYPO3 11, drop support for TYPO3 8 and 9
+    * Ensure compatibility with TYPO3 11, drop support for TYPO3 8 and 9
 
 2021-03-19 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Fix passing of headers for TYPO3 9 and 10 (thanks to Florian Rival)
-	* Release version 2.4.2
+    * Fix passing of headers for TYPO3 9 and 10 (thanks to Florian Rival)
+    * Release version 2.4.2
 
 2021-02-22 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Update composer manifest
-	* Release version 2.4.1
+    * Update composer manifest
+    * Release version 2.4.1
 
 2020-05-07 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Release version 2.4.0
+    * Release version 2.4.0
 
 2020-04-12 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Implement new configuration check API, resolves #5
-	* Update documentation settings, resolves #6
-	* Add new "headers" configuration parameter, resolves #4
+    * Implement new configuration check API, resolves #5
+    * Update documentation settings, resolves #6
+    * Add new "headers" configuration parameter, resolves #4
 
 2020-04-10 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-	* Ensure compatibility with TYPO3 10
+    * Ensure compatibility with TYPO3 10
 
 2018-12-28 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Drop compatibility with TYPO3 7, prepare for TYPO3, code cleanup, resolves #3
-	* Add functional tests
-	* Release version 2.3.0
+    * Drop compatibility with TYPO3 7, prepare for TYPO3, code cleanup, resolves #3
+    * Add functional tests
+    * Release version 2.3.0
 
 2018-07-18 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Updated documentation regarding allowed absolute file paths
-	* Released version 2.2.2
+    * Updated documentation regarding allowed absolute file paths
+    * Released version 2.2.2
 
 2018-02-17 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Updated headers initialization
-	* Released version 2.2.1
+    * Updated headers initialization
+    * Released version 2.2.1
 
 2018-01-23 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Released version 2.2.0
+    * Released version 2.2.0
 
 2018-01-19 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Used new FileUtility for reading files, resolves #2
+    * Used new FileUtility for reading files, resolves #2
 
 2017-04-05 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Released version 2.1.0
+    * Released version 2.1.0
 
 2017-04-01 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Verified compatibility with TYPO3 CMS 8, resolves #1
+    * Verified compatibility with TYPO3 CMS 8, resolves #1
 
 2016-05-02 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Released version 2.0.0, resolves #76007
+    * Released version 2.0.0, resolves #76007
 
 2016-04-26 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Refactored for TYPO3 CMS 7, resolves #75928
+    * Refactored for TYPO3 CMS 7, resolves #75928
 
 2014-06-05 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Updated code examples in documentation, resolves #59352
-	* Released version 1.1.0, resolves #57768
+    * Updated code examples in documentation, resolves #59352
+    * Released version 1.1.0, resolves #57768
 
 2014-04-03 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Implemented new API from base connector, resolves #57555
-	* Verified compatibility with TYPO3 CMS 6.2, resolves #57586
+    * Implemented new API from base connector, resolves #57555
+    * Verified compatibility with TYPO3 CMS 6.2, resolves #57586
 
 2013-09-23 Prakash A Bhat (Cobweb)  <typo3@cobweb.ch>
 
-	* Initial Release version 1.0.0
+    * Initial Release version 1.0.0
