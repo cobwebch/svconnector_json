@@ -67,6 +67,7 @@ Description
 Example
 
   .. code-block:: php
+
       'headers' => [
          'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:75.0) Gecko/20100101 Firefox/75.0',
          'Accept' => 'application/json',
@@ -89,6 +90,7 @@ Description
 Example
 
   .. code-block:: php
+
       'queryParameters' => [
          'foo' => 'bar',
       ]
@@ -127,9 +129,11 @@ Example
   To enable pagination for a Hydra data source:
 
   .. code-block:: php
+
       'paginator' => 'hydra'
 
   To enable pagination for another type of data source with a custom Paginator:
 
   .. code-block:: php
+
       'paginator' => \MyVendorName\MyExtension\Paginator\FooPaginator::class
