@@ -22,7 +22,7 @@ use Cobweb\Svconnector\Service\ConnectorBase;
 use Cobweb\Svconnector\Utility\FileUtility;
 use Cobweb\SvconnectorJson\Paginator\AbstractPaginator;
 use Cobweb\SvconnectorJson\Paginator\HydraPaginator;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -67,19 +67,19 @@ class ConnectorJson extends ConnectorBase
         $result = parent::checkConfiguration($parameters);
         // The "uri" parameter is mandatory
         if (empty($parameters['uri'])) {
-            $result[AbstractMessage::ERROR][] = $this->sL(
+            $result[ContextualFeedbackSeverity::ERROR->value][] = $this->sL(
                 'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:no_json_defined'
             );
         }
         // The "headers" parameter is expected to be an array
         if (isset($parameters['headers']) && !is_array($parameters['headers'])) {
-            $result[AbstractMessage::WARNING][] = $this->sL(
+            $result[ContextualFeedbackSeverity::WARNING->value][] = $this->sL(
                 'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:headers_must_be_array'
             );
         }
         // The "queryParameters" parameter is expected to be an array
         if (isset($parameters['queryParameters']) && !is_array($parameters['queryParameters'])) {
-            $result[AbstractMessage::WARNING][] = $this->sL(
+            $result[ContextualFeedbackSeverity::WARNING->value][] = $this->sL(
                 'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:query_parameters_must_be_array'
             );
         }
@@ -228,9 +228,9 @@ class ConnectorJson extends ConnectorBase
         $problems = $this->checkConfiguration($parameters);
         // Log all issues and raise error if any
         $this->logConfigurationCheck($problems);
-        if (count($problems[AbstractMessage::ERROR]) > 0) {
+        if (count($problems[ContextualFeedbackSeverity::ERROR->value]) > 0) {
             $message = '';
-            foreach ($problems[AbstractMessage::ERROR] as $problem) {
+            foreach ($problems[ContextualFeedbackSeverity::ERROR->value] as $problem) {
                 if ($message !== '') {
                     $message .= "\n";
                 }
