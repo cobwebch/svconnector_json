@@ -17,7 +17,7 @@ namespace Cobweb\SvconnectorJson\Unit\Tests;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Cobweb\Svconnector\Domain\Repository\ConnectorRepository;
+use Cobweb\Svconnector\Exception\SourceErrorException;
 use Cobweb\SvconnectorJson\Service\ConnectorJson;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,7 +43,6 @@ class ConnectorJsonTest extends FunctionalTestCase
      */
     public function setUp(): void
     {
-        parent::setUp();
         try {
             $this->subject = GeneralUtility::makeInstance(ConnectorJson::class);
         } catch (\Exception $e) {
@@ -107,7 +106,7 @@ class ConnectorJsonTest extends FunctionalTestCase
      */
     public function readingUnknownFileThrowsException(): void
     {
-        $this->expectException(\Cobweb\Svconnector\Exception\SourceErrorException::class);
+        $this->expectException(SourceErrorException::class);
         $this->subject->fetchArray(
                 [
                         'filename' => 'foobar.xml'
@@ -134,7 +133,7 @@ class ConnectorJsonTest extends FunctionalTestCase
      */
     public function wrongConfigurationThrowsException(array $configuration): void
     {
-        $this->expectException(\Cobweb\Svconnector\Exception\SourceErrorException::class);
+        $this->expectException(SourceErrorException::class);
         $this->subject->fetchArray($configuration);
     }
 }

@@ -41,7 +41,7 @@ final class HydraPaginator extends AbstractPaginator
         if ($nextPage === '') {
             return $this->startPage;
         }
-        $queryParts = parse_url($nextPage, PHP_URL_QUERY);
+        $queryParts = parse_url((string)$nextPage, PHP_URL_QUERY);
         // If the URL is somehow malformed, return 1
         if (!$queryParts) {
             return $this->startPage;

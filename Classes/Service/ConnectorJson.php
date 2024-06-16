@@ -148,7 +148,7 @@ class ConnectorJson extends ConnectorBase
     {
         // Get the data from the source
         $result = $this->query($parameters);
-        $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
+        $result = json_decode((string)$result, true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($result)) {
             throw new \InvalidArgumentException(
                 'JSON structure could not be decoded',
@@ -178,7 +178,7 @@ class ConnectorJson extends ConnectorBase
                     $currentParameters = $parameters;
                     $currentParameters['queryParameters'] = $mergedQueyParameters;
                     $result = $this->query($currentParameters);
-                    $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
+                    $result = json_decode((string)$result, true, 512, JSON_THROW_ON_ERROR);
                     if (!is_array($result)) {
                         throw new \InvalidArgumentException(
                             sprintf(
