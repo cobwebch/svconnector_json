@@ -17,6 +17,7 @@ namespace Cobweb\SvconnectorJson\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Cobweb\Svconnector\Attribute\AsConnectorService;
 use Cobweb\Svconnector\Event\ProcessArrayDataEvent;
 use Cobweb\Svconnector\Event\ProcessRawDataEvent;
 use Cobweb\Svconnector\Event\ProcessResponseEvent;
@@ -32,21 +33,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Service that reads JSON data for the "svconnector_json" extension.
  */
+#[AsConnectorService(type: 'json', name: 'JSON connector')]
 class ConnectorJson extends ConnectorBase
 {
     protected string $extensionKey = 'svconnector_json';
-
-    protected string $type = 'json';
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function getName(): string
-    {
-        return 'JSON connector';
-    }
 
     /**
      * Verifies that the connection is functional
