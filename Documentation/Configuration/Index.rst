@@ -76,6 +76,18 @@ Example
       ]
 
 
+.. _configuration-method:
+
+method
+^^^^^^
+
+Type
+  string
+
+Description
+  Method to use for querying the external data source. Optional, defaults to :code:`GET`.
+
+
 .. _configuration-query-parameters:
 
 queryParameters
