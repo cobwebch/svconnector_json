@@ -258,7 +258,7 @@ class ConnectorJson extends ConnectorBase
         parent::query(...func_get_args());
 
         // Check the configuration
-        $problems = $this->checkConfiguration($this->parameters);
+        $problems = $this->checkConfiguration();
         // Log all issues and raise error if any
         $this->logConfigurationCheck($problems);
         if (count($problems[ContextualFeedbackSeverity::ERROR->value]) > 0) {
