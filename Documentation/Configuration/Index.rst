@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _configuration:
@@ -11,8 +11,7 @@
 Configuration
 -------------
 
-The various "fetch" methods of the connector all take the same
-parameters, described below.
+This chapter describes the parameters that can be used to configure the JSON connector service.
 
 
 .. _configuration-uri:
@@ -65,7 +64,7 @@ Description
   Key-value pairs of headers that should be sent along with the request.
 
 Example
-  Example headers for settings an alternate user agent and defining what reponse
+  Example headers for setting an alternate user agent and defining what reponse
   format to accept.
 
   .. code-block:: php
