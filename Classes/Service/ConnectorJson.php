@@ -279,13 +279,13 @@ class ConnectorJson extends ConnectorBase
 
         // Define the headers
         $headers = null;
-        if (isset($this->parameters['headers']) && is_array($this->parameters['headers']) && count($this->parameters['headers']) > 0) {
+        if (is_array($this->parameters['headers'] ?? null) && count($this->parameters['headers']) > 0) {
             $headers = $this->parameters['headers'];
         }
 
         $this->logger->info(
-            'Call parameters and headers',
-            ['params' => $this->parameters, 'headers' => $headers]
+            'Call parameters',
+            $this->parameters
         );
 
         $fileUtility = GeneralUtility::makeInstance(FileUtility::class);
