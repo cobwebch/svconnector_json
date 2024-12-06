@@ -11,7 +11,7 @@
                interlink-shortcode="cobweb/svconnector_json"
     />
     <project
-            title="CSV Connector Service"
+            title="JSON Connector Service"
             release="4.2.0"
             copyright="2009-2024"
     />
