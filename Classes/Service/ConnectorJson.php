@@ -43,7 +43,7 @@ class ConnectorJson extends ConnectorBase
      * In the case of this service, it is always the case
      * It might fail for a specific file, but it is always available in general
      *
-     * @return boolean TRUE if the service is available
+     * @return bool TRUE if the service is available
      */
     public function isAvailable(): bool
     {
@@ -193,7 +193,7 @@ class ConnectorJson extends ConnectorBase
                     $mergedQueyParameters = array_merge(
                         $this->parameters['queryParameters'] ?? [],
                         [
-                            $pagingParameter => $nextPage
+                            $pagingParameter => $nextPage,
                         ]
                     );
                     $currentParameters = $this->parameters;

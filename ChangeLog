@@ -1,3 +1,7 @@
+2024-12-06 Francois Suter (Idéative)  <typo3@ideative.ch>
+
+    * Automate tests and documentation, move tests to TYPO3 testing framework
+
 2024-11-26 Francois Suter (Idéative)  <typo3@ideative.ch>
 
     * Verify compatibility with TYPO3 13 ELTS, resolves #16

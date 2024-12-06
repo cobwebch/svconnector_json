@@ -18,6 +18,8 @@ namespace Cobweb\SvconnectorJson\Unit\Tests;
  */
 
 use Cobweb\SvconnectorJson\Paginator\HydraPaginator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class HydraPaginatorTest extends UnitTestCase
@@ -97,10 +99,7 @@ class HydraPaginatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider nextPageProvider
-     */
+    #[Test] #[DataProvider('nextPageProvider')]
     public function getNextPageReturnsPageNumber(array $data, int $expected): void
     {
         $this->subject->setData($data);
@@ -186,10 +185,7 @@ class HydraPaginatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider membersProvider
-     */
+    #[Test] #[DataProvider('membersProvider')]
     public function aggregateReturnsCompiledMembers(array $incomingData, array $aggregatedData): void
     {
         self::assertSame(

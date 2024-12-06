@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cobweb\SvconnectorJson\Unit\Tests;
+namespace Cobweb\SvconnectorJson\Functional\Tests;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -19,21 +19,21 @@ namespace Cobweb\SvconnectorJson\Unit\Tests;
 
 use Cobweb\Svconnector\Exception\SourceErrorException;
 use Cobweb\SvconnectorJson\Service\ConnectorJson;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Testcase for the JSON Connector service.
  *
  * @author Francois Suter <typo3@cobweb.ch>
- * @package TYPO3
- * @subpackage tx_svconnector_json
  */
 class ConnectorJsonTest extends FunctionalTestCase
 {
-    protected $testExtensionsToLoad = [
-            'typo3conf/ext/svconnector',
-            'typo3conf/ext/svconnector_json',
+    protected array $testExtensionsToLoad = [
+        'typo3conf/ext/svconnector',
+        'typo3conf/ext/svconnector_json',
     ];
 
     protected ConnectorJson $subject;
@@ -43,6 +43,7 @@ class ConnectorJsonTest extends FunctionalTestCase
      */
     public function setUp(): void
     {
+        parent::setUp();
         try {
             $this->subject = GeneralUtility::makeInstance(ConnectorJson::class);
         } catch (\Exception $e) {
@@ -52,37 +53,35 @@ class ConnectorJsonTest extends FunctionalTestCase
 
     /**
      * Provides references to JSON files to read and expected output.
-     *
-     * @return array
      */
-    public function sourceDataProvider(): array
+    public static function sourceDataProvider(): array
     {
         return [
-                'UTF-8 data' => [
-                        'parameters' => [
-                                'uri' => 'EXT:svconnector_json/Tests/Functional/Fixtures/data_utf8.json'
-                        ],
-                        'result' => [
-                                'items' => [
-                                        [
-                                                'name' => 'Porte interdùm lacîna c\'est euismod.'
-                                        ]
-                                ]
-                        ]
+            'UTF-8 data' => [
+                'parameters' => [
+                    'uri' => 'EXT:svconnector_json/Tests/Functional/Fixtures/data_utf8.json',
                 ],
-                'ISO-8859-1 data' => [
-                        'parameters' => [
-                                'uri' => 'EXT:svconnector_json/Tests/Functional/Fixtures/data_latin1.json',
-                                'encoding' => 'iso-8859-1'
+                'result' => [
+                    'items' => [
+                        [
+                            'name' => 'Porte interdùm lacîna c\'est euismod.',
                         ],
-                        'result' => [
-                                'items' => [
-                                        [
-                                                'name' => 'Porte interdùm lacîna c\'est euismod.'
-                                        ]
-                                ]
-                        ]
-                ]
+                    ],
+                ],
+            ],
+            'ISO-8859-1 data' => [
+                'parameters' => [
+                    'uri' => 'EXT:svconnector_json/Tests/Functional/Fixtures/data_latin1.json',
+                    'encoding' => 'iso-8859-1',
+                ],
+                'result' => [
+                    'items' => [
+                        [
+                            'name' => 'Porte interdùm lacîna c\'est euismod.',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -91,49 +90,51 @@ class ConnectorJsonTest extends FunctionalTestCase
      *
      * @param array $parameters List of connector parameters
      * @param array $result Expected array structure
-     * @test
-     * @dataProvider sourceDataProvider
      * @throws \Exception
      */
+    #[Test] #[DataProvider('sourceDataProvider')]
     public function readingJsonFileIntoArray(array $parameters, array $result): void
     {
-        $data = $this->subject->fetchArray($parameters);
+        $this->subject->setParameters($parameters);
+        $data = $this->subject->fetchArray();
         self::assertSame($result, $data);
     }
 
     /**
      * @test
      */
+    #[Test]
     public function readingUnknownFileThrowsException(): void
     {
         $this->expectException(SourceErrorException::class);
-        $this->subject->fetchArray(
-                [
-                        'filename' => 'foobar.xml'
-                ]
+        $this->subject->setParameters(
+            [
+                'filename' => 'foobar.xml',
+            ]
         );
+        $this->subject->fetchArray();
     }
 
-    public function wrongConfigurationProvider(): array
+    public static function wrongConfigurationProvider(): array
     {
         return [
-                'Missing "uri" parameter' => [
-                        [
-                                'encoding' => 'UTF-8'
-                        ]
-                ]
+            'Missing "uri" parameter' => [
+                'parameters' => [
+                    'encoding' => 'UTF-8',
+                ],
+            ],
         ];
     }
 
     /**
      * @param array $configuration
      * @throws \Exception
-     * @test
-     * @dataProvider wrongConfigurationProvider
      */
-    public function wrongConfigurationThrowsException(array $configuration): void
+    #[Test] #[DataProvider('wrongConfigurationProvider')]
+    public function wrongConfigurationThrowsException(array $parameters): void
     {
         $this->expectException(SourceErrorException::class);
-        $this->subject->fetchArray($configuration);
+        $this->subject->setParameters($parameters);
+        $this->subject->fetchArray();
     }
 }
