@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Connector service - JSON',
     'description' => 'Connector service for JSON data',
     'category' => 'services',
-    'version' => '4.2.0',
+    'version' => '5.0.0',
     'state' => 'stable',
     'clearcacheonload' => 0,
     'author' => 'Francois Suter (Idéative)',
@@ -25,7 +25,7 @@ $EM_CONF[$_EXTKEY] = [
             'depends' =>
                 [
                     'typo3' => '12.4.0-13.4.99',
-                    'svconnector' => '5.0.0-0.0.0',
+                    'svconnector' => '6.0.0-0.0.0',
                 ],
             'conflicts' =>
                 [
