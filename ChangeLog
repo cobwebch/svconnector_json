@@ -1,3 +1,7 @@
+2026-01-15 Francois Suter (Idéative)  <typo3@ideative.ch>
+
+    * Replace resource in samples configuration, resolves #20
+
 2024-12-08 Francois Suter (Idéative)  <typo3@ideative.ch>
 
     * Release version 5.0.0
