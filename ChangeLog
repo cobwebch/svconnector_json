@@ -1,3 +1,7 @@
+2026-01-25 Francois Suter (Idéative)  <typo3@ideative.ch>
+
+    * Ensure compatibility with TYPO3 14 and PHP 8.5, resolves #21
+
 2026-01-15 Francois Suter (Idéative)  <typo3@ideative.ch>
 
     * Replace resource in samples configuration, resolves #20

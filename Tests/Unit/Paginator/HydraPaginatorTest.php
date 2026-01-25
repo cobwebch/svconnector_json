@@ -32,9 +32,7 @@ class HydraPaginatorTest extends UnitTestCase
         $this->subject = new HydraPaginator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStartPageReturns1(): void
     {
         self::assertSame(
@@ -43,9 +41,7 @@ class HydraPaginatorTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPagingParameterReturnsPage(): void
     {
         self::assertSame(

@@ -27,14 +27,14 @@ task. The first step is to get the proper service object with the desired parame
       'encoding' => 'utf-8',
    ];
    $registry = GeneralUtility::makeInstance(\Cobweb\Svconnector\Registry\ConnectorRegistry::class);
-   $connector = $registry->getServiceForType('json');
+   $connector = $registry->getServiceForType('json', $parameters);
 
 The next step is simply to call the appropriate method from the API depending on which format you want to have
 in return. For example:
 
 .. code-block:: php
 
-   $data = $connector->fetchArray($parameters);
+   $data = $connector->fetchArray();
 
 
 This will return a PHP array from the decoded JSON data. The

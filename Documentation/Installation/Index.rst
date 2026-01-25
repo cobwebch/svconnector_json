@@ -16,6 +16,17 @@ JSON data inside your own code. It requires extension "svconnector"
 which provides the base for all connector services.
 
 
+.. _installation-update-600:
+
+Updating to 6.0.0
+^^^^^^^^^^^^^^^^^
+
+Version 6.0.0 adds support for TYPO3 13 and PHP 8.5, while dropping support
+for TYPO3 12 and PHP 8.1.
+
+Hooks have been entirely removed. Use only events.
+
+
 .. _installation-update-500:
 
 Updating to 5.0.0
@@ -28,7 +39,7 @@ Events have been introduced to replace hooks. Existing hooks are still in place,
 but are deprecated and events should now be used instead
 (see the :ref:`svconnector manual <svconnector:developers-events>` for reference).
 
-It is now possible to :ref:`choose another method <configuration-method>` that "GET"
+It is now possible to :ref:`choose another method <configuration-method>` than "GET"
 when querying data.
 
 

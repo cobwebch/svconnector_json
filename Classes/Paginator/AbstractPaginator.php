@@ -34,7 +34,7 @@ abstract class AbstractPaginator
         return $this->pagingParameter;
     }
 
-    public function setData(array $data): AbstractPaginator
+    public function setData(array $data): self
     {
         $this->data = $data;
         return $this;

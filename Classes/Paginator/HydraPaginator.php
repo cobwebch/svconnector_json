@@ -28,7 +28,8 @@ final class HydraPaginator extends AbstractPaginator
     protected const HYDRA_NEXT = 'hydra:next';
     protected const HYDRA_MEMBER = 'hydra:member';
 
-    protected $message = '';
+    protected string $message = '';
+
     public function getMessage(): string
     {
         return $this->message;

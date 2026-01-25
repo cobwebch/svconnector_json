@@ -53,12 +53,11 @@ class ConnectorJson extends ConnectorBase
     /**
      * Checks the connector configuration and returns notices, warnings or errors, if any.
      *
-     * @param array $parameters Connector call parameters
      * @return array
      */
-    public function checkConfiguration(array $parameters = []): array
+    public function checkConfiguration(): array
     {
-        $result = parent::checkConfiguration(...func_get_args());
+        $result = parent::checkConfiguration();
         // The "uri" parameter is mandatory
         if (empty($this->parameters['uri'])) {
             $result[ContextualFeedbackSeverity::ERROR->value][] = $this->sL(
@@ -84,34 +83,16 @@ class ConnectorJson extends ConnectorBase
      * This method calls the query method and returns the result as is,
      * i.e. the json data, but without any additional work performed on it
      *
-     * @param array $parameters Parameters for the call
      * @return mixed Server response
      * @throws \Exception
      */
-    public function fetchRaw(array $parameters = [])
+    public function fetchRaw(): mixed
     {
-        // Call to parent is used only to raise flag about argument deprecation
-        // TODO: remove once method signature is changed in next major version
-        parent::fetchRaw(...func_get_args());
-
         $result = $this->query();
         $this->logger->info(
             'RAW JSON data',
             [$result]
         );
-        // Implement post-processing hook
-        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processRaw'] ?? null;
-        if (is_array($hooks) && count($hooks) > 0) {
-            trigger_error(
-                'Using the processRaw hook is deprecated. Use the ProcessRawDataEvent instead',
-                E_USER_DEPRECATED
-            );
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processRaw'] as $className) {
-                $processor = GeneralUtility::makeInstance($className);
-                $result = $processor->processRaw($result, $this);
-            }
-        }
-        /** @var ProcessRawDataEvent $event */
         $event = $this->eventDispatcher->dispatch(
             new ProcessRawDataEvent($result, $this)
         );
@@ -121,32 +102,13 @@ class ConnectorJson extends ConnectorBase
     /**
      * This method calls the query and returns the results from the response as an XML structure
      *
-     * @param array $parameters Parameters for the call
      * @return string XML structure
      * @throws \Exception
      */
-    public function fetchXML(array $parameters = []): string
+    public function fetchXML(): string
     {
-        // Call to parent is used only to raise flag about argument deprecation
-        // TODO: remove once method signature is changed in next major version
-        parent::fetchXML(...func_get_args());
-
         $xml = $this->fetchArray();
         $xml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . "\n" . GeneralUtility::array2xml($xml);
-
-        // Implement post-processing hook
-        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processXML'] ?? null;
-        if (is_array($hooks) && count($hooks) > 0) {
-            trigger_error(
-                'Using the processXML hook is deprecated. Use the ProcessXmlDataEvent instead',
-                E_USER_DEPRECATED
-            );
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processXML'] as $className) {
-                $processor = GeneralUtility::makeInstance($className);
-                $xml = $processor->processXML($xml, $this);
-            }
-        }
-        /** @var ProcessXmlDataEvent $event */
         $event = $this->eventDispatcher->dispatch(
             new ProcessXmlDataEvent($xml, $this)
         );
@@ -157,16 +119,11 @@ class ConnectorJson extends ConnectorBase
     /**
      * Fetch the JSON data and return it as an array
      *
-     * @param array $parameters Parameters for the call
      * @return array PHP array
      * @throws \Exception
      */
-    public function fetchArray(array $parameters = []): array
+    public function fetchArray(): array
     {
-        // Call to parent is used only to raise flag about argument deprecation
-        // TODO: remove once method signature is changed in next major version
-        parent::fetchArray(...func_get_args());
-
         // Get the data from the source
         $result = $this->query();
         $result = json_decode((string)$result, true, 512, JSON_THROW_ON_ERROR);
@@ -186,19 +143,19 @@ class ConnectorJson extends ConnectorBase
             $hasNextPage = true;
             // Assemble a list of all results, including the first one
             $allResults = [$result];
+            $originalParameters = $this->parameters;
             do {
                 $paginator->setData($result);
                 $nextPage = $paginator->getNextPage();
                 if ($nextPage > $currentPage) {
                     $mergedQueyParameters = array_merge(
-                        $this->parameters['queryParameters'] ?? [],
+                        $originalParameters['queryParameters'] ?? [],
                         [
                             $pagingParameter => $nextPage,
                         ]
                     );
-                    $currentParameters = $this->parameters;
-                    $currentParameters['queryParameters'] = $mergedQueyParameters;
-                    $result = $this->query($currentParameters);
+                    $this->parameters['queryParameters'] = $mergedQueyParameters;
+                    $result = $this->query();
                     $result = json_decode((string)$result, true, 512, JSON_THROW_ON_ERROR);
                     if (!is_array($result)) {
                         throw new \InvalidArgumentException(
@@ -215,6 +172,8 @@ class ConnectorJson extends ConnectorBase
                     $hasNextPage = false;
                 }
             } while ($hasNextPage);
+            // Restore original parameters (i.e. without paging information)
+            $this->parameters = $originalParameters;
             // Aggregate the results, if the query was paginated
             $data = $paginator->aggregate($allResults);
         }
@@ -224,20 +183,6 @@ class ConnectorJson extends ConnectorBase
             'Structured data',
             $data
         );
-
-        // Implement post-processing hook
-        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processArray'] ?? null;
-        if (is_array($hooks) && count($hooks) > 0) {
-            trigger_error(
-                'Using the processArray hook is deprecated. Use the ProcessArrayDataEvent instead',
-                E_USER_DEPRECATED
-            );
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processArray'] as $className) {
-                $processor = GeneralUtility::makeInstance($className);
-                $data = $processor->processArray($data, $this);
-            }
-        }
-        /** @var ProcessArrayDataEvent $event */
         $event = $this->eventDispatcher->dispatch(
             new ProcessArrayDataEvent($data, $this)
         );
@@ -247,16 +192,11 @@ class ConnectorJson extends ConnectorBase
     /**
      * Return the JSON data (as a string) fetched with the given parameters
      *
-     * @param array $parameters Parameters for the call
      * @return mixed JSON content (string)
      * @throws \Exception
      */
-    protected function query(array $parameters = [])
+    protected function query(): mixed
     {
-        // Call to parent is used only to raise flag about argument deprecation
-        // TODO: remove once method signature is changed in next major version
-        parent::query(...func_get_args());
-
         // Check the configuration
         $problems = $this->checkConfiguration();
         // Log all issues and raise error if any
@@ -313,33 +253,19 @@ class ConnectorJson extends ConnectorBase
         }
         // Check if the current charset is the same as the file encoding
         // Don't do the check if no encoding was defined
-        // TODO: add automatic encoding detection by reading the encoding attribute in the JSON header
         if (empty($this->parameters['encoding'])) {
-            $encoding = '';
+            $encoding = null;
             $isSameCharset = true;
         } else {
-            // Standardize charset name and compare
             $encoding = $this->parameters['encoding'];
             $isSameCharset = $this->getCharset() === $encoding;
         }
         // If the charset is not the same, convert data
         if (!$isSameCharset) {
-            $data = $this->getCharsetConverter()->conv($data, $encoding, $this->getCharset());
+            $data = mb_convert_encoding($data, $this->getCharset(), $encoding);
         }
 
-        // Process the result if any hook is registered
-        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processResponse'] ?? null;
-        if (is_array($hooks) && count($hooks) > 0) {
-            trigger_error(
-                'Using the processResponse hook is deprecated. Use the ProcessResponseEvent instead',
-                E_USER_DEPRECATED
-            );
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->extensionKey]['processResponse'] as $className) {
-                $processor = GeneralUtility::makeInstance($className);
-                $data = $processor->processResponse($data, $this);
-            }
-        }
-        /** @var ProcessResponseEvent $event */
+        // Fire event for response processing
         $event = $this->eventDispatcher->dispatch(
             new ProcessResponseEvent($data, $this)
         );
