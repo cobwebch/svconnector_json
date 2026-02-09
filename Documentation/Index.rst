@@ -27,7 +27,7 @@ JSON Connector Service
 		  JSON, data import, fetch data
 
 	:Copyright:
-		2013-2025
+		2013-2026
 
 	:Author:
 		  François Suter (Idéative)

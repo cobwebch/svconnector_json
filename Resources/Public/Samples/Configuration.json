@@ -1,8 +1,11 @@
 {
   "uri": "EXT:svconnector_json/Tests/Functional/Fixtures/data_latin1.json",
   "encoding": "iso-8859-1",
-  "headers": {
-    "Accept": "application/json",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:75.0) Gecko/20100101 Firefox/75.0"
+  "requestOptions": {
+    "body": "{\"page\": 1}",
+    "headers": {
+      "Accept": "application/json",
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:75.0) Gecko/20100101 Firefox/75.0"
+    }
   }
 }

@@ -64,10 +64,21 @@ class ConnectorJson extends ConnectorBase
                 'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:no_json_defined'
             );
         }
-        // The "headers" parameter is expected to be an array
-        if (isset($this->parameters['headers']) && !is_array($this->parameters['headers'])) {
+        // The "headers" parameter is expected to be an array (and is deprecated)
+        if (isset($this->parameters['headers'])) {
             $result[ContextualFeedbackSeverity::WARNING->value][] = $this->sL(
-                'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:headers_must_be_array'
+                'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:headers_deprecated'
+            );
+            if (!is_array($this->parameters['headers'])) {
+                $result[ContextualFeedbackSeverity::WARNING->value][] = $this->sL(
+                    'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:headers_must_be_array'
+                );
+            }
+        }
+        // The "requestOptions" parameter is expected to be an array
+        if (isset($this->parameters['requestOptions']) && !is_array($this->parameters['requestOptions'])) {
+            $result[ContextualFeedbackSeverity::WARNING->value][] = $this->sL(
+                'LLL:EXT:svconnector_json/Resources/Private/Language/locallang.xlf:request_options_must_be_array'
             );
         }
         // The "queryParameters" parameter is expected to be an array
@@ -217,10 +228,20 @@ class ConnectorJson extends ConnectorBase
             );
         }
 
-        // Define the headers
-        $headers = null;
+        // Define the request options
+        $requestOptions = $this->parameters['requestOptions'] ?? [];
+        // Include deprecated headers property
+        // TODO: remove in next major version
         if (is_array($this->parameters['headers'] ?? null) && count($this->parameters['headers']) > 0) {
-            $headers = $this->parameters['headers'];
+            $requestOptions = array_merge_recursive($requestOptions, ['headers' => $this->parameters['headers']]);
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+            $caller = end($backtrace);
+            $callerLocation = sprintf('file %s, line %d', $caller['file'], $caller['line']);
+
+            trigger_error(sprintf(
+                'Property "headers" is deprecated. Pass headers as part of the "requestOptions" property instead. Location: %s',
+                $callerLocation,
+            ), E_USER_DEPRECATED);
         }
 
         $this->logger->info(
@@ -235,8 +256,8 @@ class ConnectorJson extends ConnectorBase
         }
         $data = $fileUtility->getFileContent(
             $uri,
-            $headers,
-            $this->parameters['method'] ?? 'GET'
+            $this->parameters['method'] ?? 'GET',
+            $requestOptions,
         );
         if ($data === false) {
             $message = sprintf(

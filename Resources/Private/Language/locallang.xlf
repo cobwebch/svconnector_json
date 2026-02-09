@@ -12,6 +12,12 @@
 			<trans-unit id="headers_must_be_array" xml:space="preserve">
 				<source>The "headers" parameter must be an array. It will be ignored.</source>
 			</trans-unit>
+			<trans-unit id="headers_deprecated" xml:space="preserve">
+				<source>The "headers" parameter is deprecated. Use "requestOptions" instead.</source>
+			</trans-unit>
+			<trans-unit id="request_options_must_be_array" xml:space="preserve">
+				<source>The "requestOptions" parameter must be an array. It will be ignored.</source>
+			</trans-unit>
 			<trans-unit id="query_parameters_must_be_array" xml:space="preserve">
 				<source>The "queryParameters" parameter must be an array. It will be ignored.</source>
 			</trans-unit>
