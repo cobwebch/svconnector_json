@@ -70,14 +70,22 @@ Paging parameter
 
 Data
   Member variable :code:`$data` contains the data from the current page of results,
-  as an array (i.e. it has gone through :code:`json_decode()`. Nothing to do here,
+  as an array (i.e. it has gone through :code:`json_decode()`). Nothing to do here,
   it is loaded into the paginator for each page call and at your disposal for
   determining the next page.
+
+Connector
+  The calling connector object is available as member variable :code:`$connector`.
 
 getNextPage()
   This method is at the heart of the pagination mechanism. Based on the data from the current
   result set, it needs to send back the number of the next page to call. It is expected
   to fall back on the start page, if the next page cannot be defined.
+
+  This method also needs to merge the page parameter with the connector's query parameters.
+  The :php:`\Cobweb\SvconnectorJson\Paginator\AbstractPaginator` class provides the utility method
+  :code:`mergePagingParameter()` for this, but you are of course free to use whatever custom
+  code you need.
 
 aggregate()
   Once all pages of data have been fetched, the results must be aggregated. Again, this

@@ -7,3 +7,7 @@ services:
 
   Cobweb\SvconnectorJson\:
     resource: '../Classes/*'
+
+  Cobweb\SvconnectorJson\Service\ConnectorJson:
+    public: true
+    shared: false

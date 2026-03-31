@@ -28,16 +28,9 @@ final class HydraPaginator extends AbstractPaginator
     protected const HYDRA_NEXT = 'hydra:next';
     protected const HYDRA_MEMBER = 'hydra:member';
 
-    protected string $message = '';
-
-    public function getMessage(): string
-    {
-        return $this->message;
-    }
     public function getNextPage(): int
     {
         $nextPage = $this->data[self::HYDRA_VIEW][self::HYDRA_NEXT] ?? '';
-        $this->message = 'foo';//serialize($this->data);
         // If there's no next page, return 1 (first page)
         if ($nextPage === '') {
             return $this->startPage;
@@ -49,7 +42,9 @@ final class HydraPaginator extends AbstractPaginator
         }
         // Return the page number found in the "page" variable
         parse_str($queryParts, $variables);
-        return (int)($variables[$this->pagingParameter] ?? $this->startPage);
+        $nextPage = (int)($variables[$this->pagingParameter] ?? $this->startPage);
+        $this->mergePagingParameter($nextPage);
+        return $nextPage;
     }
 
     public function aggregate(array $finalData): array

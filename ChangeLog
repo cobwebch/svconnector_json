@@ -1,3 +1,7 @@
+2026-03-31 Francois Suter (Idéative)  <typo3@ideative.ch>
+
+    * Refactor paginators, pass constructor instance to paginator, resolves #19
+
 2026-02-09 Francois Suter (Idéative)  <typo3@ideative.ch>
 
     * Add new "requestOptions" parameter, resolves #22

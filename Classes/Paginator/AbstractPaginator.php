@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Cobweb\SvconnectorJson\Paginator;
 
+use Cobweb\Svconnector\Service\ConnectorServiceInterface;
+
 /**
  * Abstract class to inherit for any class that calculates pagination
  * for a multipage JSON request
@@ -14,8 +16,9 @@ abstract class AbstractPaginator
     protected int $startPage;
     protected string $pagingParameter;
 
-    public function __construct()
-    {
+    public function __construct(
+        protected ConnectorServiceInterface $connector
+    ) {
         // Start page value depends on the structure being paginated, but is typically 0 or 1
         // Override this constructor if start page is not 1 for your particular paginator
         $this->startPage = 1;
@@ -44,6 +47,23 @@ abstract class AbstractPaginator
      * Return the next page number to query based on the given data
      */
     abstract public function getNextPage(): int;
+
+    /**
+     * Merge the next page information with the connector's query parameters
+     */
+    protected function mergePagingParameter(int $nextPage): void
+    {
+        $this->connector->setParameters(
+            array_merge_recursive(
+                $this->connector->getParameters(),
+                [
+                    'queryParameters' => [
+                        $this->getPagingParameter() => $nextPage,
+                    ],
+                ]
+            )
+        );
+    }
 
     /**
      * Aggregate the data returned by each query to the data source

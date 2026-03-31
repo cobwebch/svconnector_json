@@ -30,16 +30,16 @@ fix: fix-cgl## Run all fixes
 test-cgl: ## Fix PHP coding styles
 	Build/Scripts/runTests.sh -s cgl
 
-.PHONY: test-unit-8-2
-test-unit-8-2: ## Run unit tests with PHP 8.2 (lowest)
-	Build/Scripts/runTests.sh -s unit -p 8.2
+#.PHONY: test-unit-8-2
+#test-unit-8-2: ## Run unit tests with PHP 8.2 (lowest)
+#	Build/Scripts/runTests.sh -s unit -p 8.2
 
-.PHONY: test-unit-8-5
-test-unit-8-5: ## Run unit tests with PHP 8.4 (highest supported by TYPO3 13)
-	Build/Scripts/runTests.sh -s unit -p 8.5
+#.PHONY: test-unit-8-5
+#test-unit-8-5: ## Run unit tests with PHP 8.4 (highest supported by TYPO3 13)
+#	Build/Scripts/runTests.sh -s unit -p 8.5
 
-.PHONY: test-unit
-test-unit: test-unit-8-2 test-unit-8-5## Run unit tests with PHP 8.2 and 8.5
+#.PHONY: test-unit
+#test-unit: test-unit-8-2 test-unit-8-5## Run unit tests with PHP 8.2 and 8.5
 
 .PHONY: test-functional-8-2
 test-functional-8-2: ## Run functional tests with PHP 8.2 and mariadb (lowest)
@@ -65,4 +65,4 @@ rector: ## Run rector
 	Build/Scripts/runTests.sh -s composerUpdateRector; Build/Scripts/runTests.sh -s rector
 
 .PHONY: test
-test: test-cgl phpstan rector test-docs test-unit test-functional## Run all tests
+test: test-cgl phpstan rector test-docs test-functional## Run all tests

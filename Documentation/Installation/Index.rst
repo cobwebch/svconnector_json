@@ -21,13 +21,20 @@ which provides the base for all connector services.
 Updating to 6.0.0
 ^^^^^^^^^^^^^^^^^
 
-Version 6.0.0 adds support for TYPO3 13 and PHP 8.5, while dropping support
+Version 6.0.0 adds support for TYPO3 14 and PHP 8.5, while dropping support
 for TYPO3 12 and PHP 8.1.
 
 A new parameter :ref:`requestOptions <configuration-request-options>` is available.
 It makes it possible to use any of the request options supported by Guzzle HTTP.
 The "headers" parameter has been deprecated. Headers should be passed as part of the
 "requestOptions" instead.
+
+The paginator architecture has changed to allow for more flexibility. The calling connector
+is passed to the paginator in the constructor, making it available inside the paginator.
+Merging the paging parameter inside the query parameters is thus delegated to the paginator.
+As such the :code:`getNextPage()` method has to call the :code:`mergePagingParameter()`
+method. See the :ref:`Developer's manual <developer-paginators>` for reference and the implementation
+in the :php:`\Cobweb\SvconnectorJson\Paginator\HydraPaginator` class as an example.
 
 Hooks have been entirely removed. Use only events.
 

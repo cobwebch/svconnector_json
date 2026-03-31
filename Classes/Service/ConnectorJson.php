@@ -150,7 +150,6 @@ class ConnectorJson extends ConnectorBase
             $data = $result;
         } else {
             $currentPage = $paginator->getStartPage();
-            $pagingParameter = $paginator->getPagingParameter();
             $hasNextPage = true;
             // Assemble a list of all results, including the first one
             $allResults = [$result];
@@ -159,13 +158,6 @@ class ConnectorJson extends ConnectorBase
                 $paginator->setData($result);
                 $nextPage = $paginator->getNextPage();
                 if ($nextPage > $currentPage) {
-                    $mergedQueyParameters = array_merge(
-                        $originalParameters['queryParameters'] ?? [],
-                        [
-                            $pagingParameter => $nextPage,
-                        ]
-                    );
-                    $this->parameters['queryParameters'] = $mergedQueyParameters;
                     $result = $this->query();
                     $result = json_decode((string)$result, true, 512, JSON_THROW_ON_ERROR);
                     if (!is_array($result)) {
@@ -183,7 +175,7 @@ class ConnectorJson extends ConnectorBase
                     $hasNextPage = false;
                 }
             } while ($hasNextPage);
-            // Restore original parameters (i.e. without paging information)
+            // Restore original parameters as they were modified by the paginator (at least with paging information)
             $this->parameters = $originalParameters;
             // Aggregate the results, if the query was paginated
             $data = $paginator->aggregate($allResults);
@@ -310,7 +302,7 @@ class ConnectorJson extends ConnectorBase
         } else {
             $paginatorClass = $paginatorSetting;
         }
-        $paginator = GeneralUtility::makeInstance($paginatorClass);
+        $paginator = GeneralUtility::makeInstance($paginatorClass, $this);
         if (!$paginator instanceof AbstractPaginator) {
             throw new \InvalidArgumentException(
                 sprintf(

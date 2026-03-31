@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cobweb\SvconnectorJson\Unit\Tests;
+namespace Cobweb\SvconnectorJson\Functional\Paginator\Tests;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,18 +18,26 @@ namespace Cobweb\SvconnectorJson\Unit\Tests;
  */
 
 use Cobweb\SvconnectorJson\Paginator\HydraPaginator;
+use Cobweb\SvconnectorJson\Service\ConnectorJson;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class HydraPaginatorTest extends UnitTestCase
+class HydraPaginatorTest extends FunctionalTestCase
 {
+    protected array $testExtensionsToLoad = [
+        'typo3conf/ext/svconnector',
+        'typo3conf/ext/svconnector_json',
+    ];
+
     protected HydraPaginator $subject;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->subject = new HydraPaginator();
+        $connector = $this->get(ConnectorJson::class);
+        $this->subject = GeneralUtility::makeInstance(HydraPaginator::class, $connector);
     }
 
     #[Test]
