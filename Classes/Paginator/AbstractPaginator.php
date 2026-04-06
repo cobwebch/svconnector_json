@@ -54,7 +54,7 @@ abstract class AbstractPaginator
     protected function mergePagingParameter(int $nextPage): void
     {
         $this->connector->setParameters(
-            array_merge_recursive(
+            array_merge(
                 $this->connector->getParameters(),
                 [
                     'queryParameters' => [
