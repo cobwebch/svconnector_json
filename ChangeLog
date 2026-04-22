@@ -1,6 +1,10 @@
+2026-04-22 Francois Suter (Idéative)  <typo3@ideative.ch>
+
+    * Release version 6.0.0
+
 2026-03-31 Francois Suter (Idéative)  <typo3@ideative.ch>
 
-    * Refactor paginators, pass constructor instance to paginator, resolves #19
+    * Refactor paginators, pass connector instance to paginator, resolves #19
 
 2026-02-09 Francois Suter (Idéative)  <typo3@ideative.ch>
 

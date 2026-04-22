@@ -17,10 +17,13 @@ namespace Cobweb\SvconnectorJson\Functional\Tests;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Cobweb\Svconnector\Domain\Model\Dto\CallContext;
+use Cobweb\Svconnector\Domain\Model\Dto\ConnectionInformation;
 use Cobweb\Svconnector\Exception\SourceErrorException;
 use Cobweb\SvconnectorJson\Service\ConnectorJson;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -45,7 +48,12 @@ class ConnectorJsonTest extends FunctionalTestCase
     {
         parent::setUp();
         try {
-            $this->subject = GeneralUtility::makeInstance(ConnectorJson::class);
+            $this->subject = GeneralUtility::makeInstance(
+                ConnectorJson::class,
+                $this->getContainer()->get(EventDispatcherInterface::class),
+                $this->getMockBuilder(CallContext::class)->getMock(),
+                $this->getMockBuilder(ConnectionInformation::class)->getMock()
+            );
         } catch (\Exception $e) {
             self::markTestSkipped($e->getMessage());
         }
